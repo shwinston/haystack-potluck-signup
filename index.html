@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sabbath Haystack Potluck Signup – Nov 7, 2026</title>
+  <style>
+    :root {
+      --bg: #f7f3eb;
+      --card: #fffdf8;
+      --accent: #2c6e49;
+      --accent-light: #4a9c6d;
+      --text: #2d2a26;
+      --muted: #6b6560;
+      --border: #e4dccf;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 1.5rem 1rem 3rem;
+      line-height: 1.5;
+    }
+    .container { max-width: 680px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 1.5rem; }
+    h1 { font-size: 1.75rem; margin: 0 0 0.25rem; color: var(--accent); }
+    .subtitle { color: var(--muted); margin: 0; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      margin-bottom: 1.5rem;
+    }
+    label { display: block; font-weight: 600; margin: 1rem 0 0.35rem; }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.65rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      background: white;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: 2px solid var(--accent-light);
+      border-color: var(--accent);
+    }
+    .row { display: flex; gap: 1rem; }
+    .row > * { flex: 1; }
+    .amount-box {
+      margin: 1rem 0;
+      padding: 0.75rem 1rem;
+      background: #eef7f1;
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1rem;
+      width: 100%;
+    }
+    button:hover { background: var(--accent-light); }
+    button.secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      margin-top: 0.5rem;
+    }
+    .note { font-size: 0.875rem; color: var(--muted); margin-top: 1.25rem; }
+    .success {
+      display: none;
+      background: #eef7f1;
+      border: 1px solid var(--accent);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+    #signups {
+      margin-top: 0.5rem;
+    }
+    .signup-item {
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+    .signup-item:last-child { border-bottom: none; }
+    .signup-item strong { color: var(--accent); }
+    .empty { color: var(--muted); font-style: italic; padding: 0.5rem 0; }
+    footer { text-align: center; margin-top: 2rem; font-size: 0.875rem; color: var(--muted); }
+    a { color: var(--accent); }
+    .status { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Haystack Potluck Signup</h1>
+      <p class="subtitle">Sabbath • November 7, 2026 • Vegetarian</p>
+    </header>
+
+    <div class="card">
+      <p style="margin-top:0">
+        Layered plates of chips, beans, rice, cheese, lettuce, tomatoes, olives, salsa, guacamole, onions, ranch, and sour cream.
+        Plus apple juice, grape juice, and dessert.
+      </p>
+
+      <form id="signup">
+        <label for="name">Your name</label>
+        <input type="text" id="name" name="name" required placeholder="Jane Doe" />
+
+        <div class="row">
+          <div>
+            <label for="party"># in your party (including you)</label>
+            <input type="number" id="party" name="party" min="1" value="1" required />
+          </div>
+          <div>
+            <label for="totalPeople">Current total people (for scaling)</label>
+            <input type="number" id="totalPeople" name="totalPeople" min="1" value="25" />
+          </div>
+        </div>
+
+        <label for="item">What are you bringing?</label>
+        <select id="item" name="item" required>
+          <option value="">— Select an item —</option>
+        </select>
+
+        <div class="amount-box" id="amountBox">
+          Select an item to see the suggested amount.
+        </div>
+
+        <label for="notes">Notes (optional)</label>
+        <textarea id="notes" name="notes" rows="2" placeholder="Any details..."></textarea>
+
+        <button type="submit">Submit Signup</button>
+        <button type="button" class="secondary" id="copyBtn">Copy Entry as Text</button>
+      </form>
+
+      <div class="success" id="success">
+        <strong>Thanks!</strong> Copy the text below and paste it into the shared Google Sheet (new row). Then refresh this page so everyone sees it.
+        <pre id="copyText" style="white-space:pre-wrap; margin:0.75rem 0 0; font-size:0.9rem;"></pre>
+      </div>
+
+      <p class="note">
+        Shared Google Sheet: <a href="https://docs.google.com/spreadsheets/d/1cU5V_bjtLYUW6svLds0cJe4aTOxzVsoFFOweY1T9pkI/edit" target="_blank">open signup sheet</a>.<br>
+        Make the sheet viewable by anyone with the link so this page can show live signups.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2 style="margin-top:0; font-size:1.25rem; color:var(--accent);">Already Taken</h2>
+      <div class="status" id="status">Loading current signups…</div>
+      <div id="signups"></div>
+    </div>
+
+    <footer>
+      Built for the Nov 7 Sabbath potluck • Items disappear from the dropdown once claimed
+    </footer>
+  </div>
+
+  <script>
+    const ALL_ITEMS = [
+      "Corn or Tortilla Chips (Fritos or sturdy)",
+      "Seasoned Beans or Vegetarian Chili",
+      "Shredded Cheese (cheddar or Mexican blend)",
+      "Shredded Lettuce (iceberg or romaine)",
+      "Diced Tomatoes",
+      "Sliced Black Olives",
+      "Salsa",
+      "Guacamole",
+      "Cooked Rice",
+      "Diced Onions",
+      "Ranch Dressing",
+      "Sour Cream",
+      "Apple Juice",
+      "Grape Juice",
+      "Dessert"
+    ];
+
+    const rates = {
+      "Corn or Tortilla Chips (Fritos or sturdy)": { amount: 2.5, unit: "oz" },
+      "Seasoned Beans or Vegetarian Chili": { amount: 0.6, unit: "cups" },
+      "Shredded Cheese (cheddar or Mexican blend)": { amount: 0.3, unit: "cups" },
+      "Shredded Lettuce (iceberg or romaine)": { amount: 1.25, unit: "cups" },
+      "Diced Tomatoes": { amount: 0.25, unit: "cups" },
+      "Sliced Black Olives": { amount: 0.1, unit: "cups" },
+      "Salsa": { amount: 0.15, unit: "cups" },
+      "Guacamole": { amount: 0.15, unit: "cups" },
+      "Cooked Rice": { amount: 0.5, unit: "cups" },
+      "Diced Onions": { amount: 0.1, unit: "cups" },
+      "Ranch Dressing": { amount: 0.1, unit: "cups" },
+      "Sour Cream": { amount: 0.1, unit: "cups" },
+      "Apple Juice": { amount: 6, unit: "oz" },
+      "Grape Juice": { amount: 6, unit: "oz" },
+      "Dessert": { amount: 1, unit: "serving" }
+    };
+
+    const SHEET_CSV = "https://docs.google.com/spreadsheets/d/1cU5V_bjtLYUW6svLds0cJe4aTOxzVsoFFOweY1T9pkI/export?format=csv&gid=490461671";
+
+    const itemSelect = document.getElementById("item");
+    const totalInput = document.getElementById("totalPeople");
+    const amountBox = document.getElementById("amountBox");
+    const signupsDiv = document.getElementById("signups");
+    const statusEl = document.getElementById("status");
+
+    let takenItems = new Set();
+    let currentSignups = [];
+
+    function updateAmount() {
+      const item = itemSelect.value;
+      const total = Math.max(1, parseInt(totalInput.value, 10) || 25);
+      if (!item || !rates[item]) {
+        amountBox.textContent = "Select an item to see the suggested amount.";
+        return;
+      }
+      const { amount, unit } = rates[item];
+      const totalAmount = Math.round(amount * total * 10) / 10;
+      amountBox.textContent = `Suggested for ${total} people: ${totalAmount} ${unit}`;
+    }
+
+    function rebuildDropdown() {
+      const current = itemSelect.value;
+      itemSelect.innerHTML = '<option value="">— Select an item —</option>';
+      ALL_ITEMS.forEach(item => {
+        if (!takenItems.has(item)) {
+          const opt = document.createElement("option");
+          opt.value = item;
+          opt.textContent = item;
+          itemSelect.appendChild(opt);
+        }
+      });
+      if (current && !takenItems.has(current)) itemSelect.value = current;
+    }
+
+    function renderSignups() {
+      if (currentSignups.length === 0) {
+        signupsDiv.innerHTML = '<div class="empty">No signups yet. Be the first!</div>';
+        return;
+      }
+      signupsDiv.innerHTML = currentSignups.map(s => `
+        <div class="signup-item">
+          <strong>${escapeHtml(s.item)}</strong> — ${escapeHtml(s.name)} (party of ${s.party})
+          ${s.notes ? `<br><span style="color:var(--muted);font-size:0.85rem;">${escapeHtml(s.notes)}</span>` : ""}
+        </div>
+      `).join("");
+    }
+
+    function escapeHtml(str) {
+      return String(str || "").replace(/[&<>"']/g, function (m) {
+        return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m];
+      });
+    }
+
+    async function loadFromSheet() {
+      statusEl.textContent = "Loading current signups from Google Sheet…";
+      try {
+        const res = await fetch(SHEET_CSV);
+        if (!res.ok) throw new Error("Sheet not public or unreachable");
+        const text = await res.text();
+        const lines = text.trim().split(/\r?\n/).slice(2); // skip header + instructions
+        currentSignups = [];
+        takenItems = new Set();
+
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          const cols = parseCSVLine(line);
+          const name = (cols[0] || "").trim();
+          const party = (cols[1] || "").trim();
+          const item = (cols[2] || "").trim();
+          const notes = (cols[4] || "").trim();
+          if (name && item && !name.toLowerCase().startsWith("example")) {
+            currentSignups.push({ name, party, item, notes });
+            takenItems.add(item);
+          }
+        }
+
+        statusEl.textContent = `Loaded ${currentSignups.length} signup(s).`;
+        rebuildDropdown();
+        renderSignups();
+      } catch (err) {
+        statusEl.textContent = "Could not load live data (sheet may not be public). Showing local demo data.";
+        // Fallback to localStorage for demo
+        const saved = JSON.parse(localStorage.getItem("haystackSignups") || "[]");
+        currentSignups = saved;
+        takenItems = new Set(saved.map(s => s.item));
+        rebuildDropdown();
+        renderSignups();
+      }
+    }
+
+    function parseCSVLine(line) {
+      const result = [];
+      let current = "";
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        const c = line[i];
+        if (c === '"') {
+          inQuotes = !inQuotes;
+        } else if (c === "," && !inQuotes) {
+          result.push(current);
+          current = "";
+        } else {
+          current += c;
+        }
+      }
+      result.push(current);
+      return result.map(s => s.replace(/^"|"$/g, "").replace(/""/g, '"'));
+    }
+
+    function buildEntryText() {
+      const name = document.getElementById("name").value.trim();
+      const party = document.getElementById("party").value;
+      const item = itemSelect.value;
+      const notes = document.getElementById("notes").value.trim();
+      const total = totalInput.value;
+      const amountText = amountBox.textContent;
+      return `${name}\t${party}\t${item}\t${amountText}\t${notes}`;
+    }
+
+    document.getElementById("copyBtn").addEventListener("click", async () => {
+      const text = buildEntryText();
+      try {
+        await navigator.clipboard.writeText(text);
+        document.getElementById("copyBtn").textContent = "Copied!";
+        setTimeout(() => { document.getElementById("copyBtn").textContent = "Copy Entry as Text"; }, 2000);
+      } catch {
+        alert("Copy failed — select and copy the text manually.");
+      }
+    });
+
+    document.getElementById("signup").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const text = buildEntryText();
+      document.getElementById("copyText").textContent = text;
+      document.getElementById("success").style.display = "block";
+
+      // Also save locally so demo works
+      const entry = {
+        name: document.getElementById("name").value.trim(),
+        party: document.getElementById("party").value,
+        item: itemSelect.value,
+        notes: document.getElementById("notes").value.trim()
+      };
+      currentSignups.push(entry);
+      takenItems.add(entry.item);
+      localStorage.setItem("haystackSignups", JSON.stringify(currentSignups));
+      rebuildDropdown();
+      renderSignups();
+
+      document.getElementById("signup").reset();
+      document.getElementById("totalPeople").value = 25;
+      updateAmount();
+    });
+
+    itemSelect.addEventListener("change", updateAmount);
+    totalInput.addEventListener("input", updateAmount);
+
+    loadFromSheet();
+    updateAmount();
+  </script>
+</body>
+</html>
