@@ -36,7 +36,7 @@
       margin-bottom: 1.5rem;
     }
     label { display: block; font-weight: 600; margin: 1rem 0 0.35rem; }
-    input, select, textarea {
+    input, textarea {
       width: 100%;
       padding: 0.65rem 0.75rem;
       border: 1px solid var(--border);
@@ -44,20 +44,19 @@
       font-size: 1rem;
       background: white;
     }
-    input:focus, select:focus, textarea:focus {
+    input[type="checkbox"] {
+      width: 1.1rem;
+      height: 1.1rem;
+      padding: 0;
+      margin: 0.15rem 0 0;
+      flex: 0 0 auto;
+    }
+    input:focus, textarea:focus {
       outline: 2px solid var(--accent-light);
       border-color: var(--accent);
     }
     .row { display: flex; gap: 1rem; }
     .row > * { flex: 1; }
-    .amount-box {
-      margin: 1rem 0;
-      padding: 0.75rem 1rem;
-      background: #eef7f1;
-      border-left: 4px solid var(--accent);
-      border-radius: 6px;
-      font-weight: 600;
-    }
     button {
       background: var(--accent);
       color: white;
@@ -71,12 +70,6 @@
       width: 100%;
     }
     button:hover { background: var(--accent-light); }
-    button.secondary {
-      background: transparent;
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      margin-top: 0.5rem;
-    }
     .note { font-size: 0.875rem; color: var(--muted); margin-top: 1.25rem; }
     .success {
       display: none;
@@ -86,9 +79,26 @@
       border-radius: 8px;
       margin-top: 1rem;
     }
-    #signups {
-      margin-top: 0.5rem;
+    .choice {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      margin: 0 0 0.4rem;
+      padding: 0.6rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: white;
+      font-weight: 500;
+      cursor: pointer;
     }
+    .choice .amt {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    #signups { margin-top: 0.5rem; }
     .signup-item {
       padding: 0.6rem 0.75rem;
       border-bottom: 1px solid var(--border);
@@ -100,6 +110,7 @@
     footer { text-align: center; margin-top: 2rem; font-size: 0.875rem; color: var(--muted); }
     a { color: var(--accent); }
     .status { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem; }
+    .hint { font-size: 0.85rem; color: var(--muted); font-weight: 400; margin: 0 0 0.5rem; }
   </style>
 </head>
 <body>
@@ -130,31 +141,17 @@
           </div>
         </div>
 
-        <label for="item">What are you bringing?</label>
-        <select id="item" name="item" required>
-          <option value="">— Select an item —</option>
-        </select>
-
-        <div class="amount-box" id="amountBox">
-          Select an item to see the suggested amount.
-        </div>
+        <label>What are you bringing?</label>
+        <p class="hint">Check every item you will bring. Amounts scale to the total above.</p>
+        <div id="itemList"></div>
 
         <label for="notes">Notes (optional)</label>
         <textarea id="notes" name="notes" rows="2" placeholder="Any details..."></textarea>
 
         <button type="submit">Submit Signup</button>
-        <button type="button" class="secondary" id="copyBtn">Copy Entry as Text</button>
       </form>
 
-      <div class="success" id="success">
-        <strong>Thanks!</strong> Copy the text below and paste it into the shared Google Sheet (new row). Then refresh this page so everyone sees it.
-        <pre id="copyText" style="white-space:pre-wrap; margin:0.75rem 0 0; font-size:0.9rem;"></pre>
-      </div>
-
-      <p class="note">
-        Shared Google Sheet: <a href="https://docs.google.com/spreadsheets/d/1cU5V_bjtLYUW6svLds0cJe4aTOxzVsoFFOweY1T9pkI/edit" target="_blank">open signup sheet</a>.<br>
-        Make the sheet viewable by anyone with the link so this page can show live signups.
-      </p>
+      <div class="success" id="success"></div>
     </div>
 
     <div class="card">
@@ -164,7 +161,7 @@
     </div>
 
     <footer>
-      Built for the Nov 7 Sabbath potluck • Items disappear from the dropdown once claimed
+      Built for the Nov 7 Sabbath potluck • Claimed items leave the list
     </footer>
   </div>
 
@@ -206,53 +203,26 @@
     };
 
     const SHEET_CSV = "https://docs.google.com/spreadsheets/d/1cU5V_bjtLYUW6svLds0cJe4aTOxzVsoFFOweY1T9pkI/export?format=csv&gid=490461671";
+    const STORAGE_KEY = "haystackSignups";
 
-    const itemSelect = document.getElementById("item");
     const totalInput = document.getElementById("totalPeople");
-    const amountBox = document.getElementById("amountBox");
+    const itemList = document.getElementById("itemList");
     const signupsDiv = document.getElementById("signups");
     const statusEl = document.getElementById("status");
+    const successEl = document.getElementById("success");
 
     let takenItems = new Set();
     let currentSignups = [];
 
-    function updateAmount() {
-      const item = itemSelect.value;
-      const total = Math.max(1, parseInt(totalInput.value, 10) || 25);
-      if (!item || !rates[item]) {
-        amountBox.textContent = "Select an item to see the suggested amount.";
-        return;
-      }
-      const { amount, unit } = rates[item];
-      const totalAmount = Math.round(amount * total * 10) / 10;
-      amountBox.textContent = `Suggested for ${total} people: ${totalAmount} ${unit}`;
+    function headcount() {
+      return Math.max(1, parseInt(totalInput.value, 10) || 25);
     }
 
-    function rebuildDropdown() {
-      const current = itemSelect.value;
-      itemSelect.innerHTML = '<option value="">— Select an item —</option>';
-      ALL_ITEMS.forEach(item => {
-        if (!takenItems.has(item)) {
-          const opt = document.createElement("option");
-          opt.value = item;
-          opt.textContent = item;
-          itemSelect.appendChild(opt);
-        }
-      });
-      if (current && !takenItems.has(current)) itemSelect.value = current;
-    }
-
-    function renderSignups() {
-      if (currentSignups.length === 0) {
-        signupsDiv.innerHTML = '<div class="empty">No signups yet. Be the first!</div>';
-        return;
-      }
-      signupsDiv.innerHTML = currentSignups.map(s => `
-        <div class="signup-item">
-          <strong>${escapeHtml(s.item)}</strong> — ${escapeHtml(s.name)} (party of ${s.party})
-          ${s.notes ? `<br><span style="color:var(--muted);font-size:0.85rem;">${escapeHtml(s.notes)}</span>` : ""}
-        </div>
-      `).join("");
+    function suggested(item) {
+      const rate = rates[item];
+      if (!rate) return "";
+      const totalAmount = Math.round(rate.amount * headcount() * 10) / 10;
+      return totalAmount + " " + rate.unit;
     }
 
     function escapeHtml(str) {
@@ -261,40 +231,78 @@
       });
     }
 
+    function rebuildItemList() {
+      const checked = new Set(
+        Array.from(itemList.querySelectorAll("input:checked")).map(function (el) { return el.value; })
+      );
+      const available = ALL_ITEMS.filter(function (item) { return !takenItems.has(item); });
+      if (!available.length) {
+        itemList.innerHTML = '<div class="empty">Every item is claimed.</div>';
+        return;
+      }
+      itemList.innerHTML = available.map(function (item) {
+        return '<label class="choice">' +
+          '<input type="checkbox" name="item" value="' + escapeHtml(item) + '"' + (checked.has(item) ? " checked" : "") + " />" +
+          "<span>" + escapeHtml(item) + "</span>" +
+          '<span class="amt">' + escapeHtml(suggested(item)) + "</span>" +
+          "</label>";
+      }).join("");
+    }
+
+    function renderSignups() {
+      if (currentSignups.length === 0) {
+        signupsDiv.innerHTML = '<div class="empty">No signups yet. Be the first!</div>';
+        return;
+      }
+      signupsDiv.innerHTML = currentSignups.map(function (s) {
+        return '<div class="signup-item">' +
+          "<strong>" + escapeHtml(s.item) + "</strong> — " + escapeHtml(s.name) +
+          " (party of " + escapeHtml(s.party) + ")" +
+          (s.amount ? "<br><span style=\"color:var(--muted);font-size:0.85rem;\">" + escapeHtml(s.amount) + "</span>" : "") +
+          (s.notes ? "<br><span style=\"color:var(--muted);font-size:0.85rem;\">" + escapeHtml(s.notes) + "</span>" : "") +
+          "</div>";
+      }).join("");
+    }
+
+    function persist() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(currentSignups));
+    }
+
+    function applySignups(rows, status) {
+      currentSignups = rows;
+      takenItems = new Set(rows.map(function (s) { return s.item; }));
+      statusEl.textContent = status;
+      rebuildItemList();
+      renderSignups();
+    }
+
     async function loadFromSheet() {
-      statusEl.textContent = "Loading current signups from Google Sheet…";
+      statusEl.textContent = "Loading current signups…";
       try {
         const res = await fetch(SHEET_CSV);
         if (!res.ok) throw new Error("Sheet not public or unreachable");
         const text = await res.text();
-        const lines = text.trim().split(/\r?\n/).slice(2); // skip header + instructions
-        currentSignups = [];
-        takenItems = new Set();
-
-        for (const line of lines) {
-          if (!line.trim()) continue;
+        if (text.indexOf("<!doctype html") !== -1 || text.indexOf("<html") !== -1) {
+          throw new Error("Sheet is not public");
+        }
+        const lines = text.trim().split(/\r?\n/).slice(1);
+        const rows = [];
+        lines.forEach(function (line) {
+          if (!line.trim()) return;
           const cols = parseCSVLine(line);
           const name = (cols[0] || "").trim();
           const party = (cols[1] || "").trim();
           const item = (cols[2] || "").trim();
+          const amount = (cols[3] || "").trim();
           const notes = (cols[4] || "").trim();
-          if (name && item && !name.toLowerCase().startsWith("example")) {
-            currentSignups.push({ name, party, item, notes });
-            takenItems.add(item);
+          if (name && item && name.toLowerCase().indexOf("example") !== 0 && ALL_ITEMS.indexOf(item) !== -1) {
+            rows.push({ name: name, party: party, item: item, amount: amount, notes: notes });
           }
-        }
-
-        statusEl.textContent = `Loaded ${currentSignups.length} signup(s).`;
-        rebuildDropdown();
-        renderSignups();
+        });
+        applySignups(rows, "Loaded " + rows.length + " signup(s).");
       } catch (err) {
-        statusEl.textContent = "Could not load live data (sheet may not be public). Showing local demo data.";
-        // Fallback to localStorage for demo
-        const saved = JSON.parse(localStorage.getItem("haystackSignups") || "[]");
-        currentSignups = saved;
-        takenItems = new Set(saved.map(s => s.item));
-        rebuildDropdown();
-        renderSignups();
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        applySignups(saved, "Showing signups saved in this browser.");
       }
     }
 
@@ -314,59 +322,44 @@
         }
       }
       result.push(current);
-      return result.map(s => s.replace(/^"|"$/g, "").replace(/""/g, '"'));
+      return result.map(function (s) { return s.replace(/^"|"$/g, "").replace(/""/g, '"'); });
     }
 
-    function buildEntryText() {
+    document.getElementById("signup").addEventListener("submit", function (e) {
+      e.preventDefault();
       const name = document.getElementById("name").value.trim();
       const party = document.getElementById("party").value;
-      const item = itemSelect.value;
       const notes = document.getElementById("notes").value.trim();
-      const total = totalInput.value;
-      const amountText = amountBox.textContent;
-      return `${name}\t${party}\t${item}\t${amountText}\t${notes}`;
-    }
-
-    document.getElementById("copyBtn").addEventListener("click", async () => {
-      const text = buildEntryText();
-      try {
-        await navigator.clipboard.writeText(text);
-        document.getElementById("copyBtn").textContent = "Copied!";
-        setTimeout(() => { document.getElementById("copyBtn").textContent = "Copy Entry as Text"; }, 2000);
-      } catch {
-        alert("Copy failed — select and copy the text manually.");
+      const chosen = Array.from(itemList.querySelectorAll("input:checked")).map(function (el) { return el.value; });
+      if (!chosen.length) {
+        successEl.style.display = "block";
+        successEl.innerHTML = "<strong>Pick at least one item.</strong>";
+        return;
       }
-    });
-
-    document.getElementById("signup").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const text = buildEntryText();
-      document.getElementById("copyText").textContent = text;
-      document.getElementById("success").style.display = "block";
-
-      // Also save locally so demo works
-      const entry = {
-        name: document.getElementById("name").value.trim(),
-        party: document.getElementById("party").value,
-        item: itemSelect.value,
-        notes: document.getElementById("notes").value.trim()
-      };
-      currentSignups.push(entry);
-      takenItems.add(entry.item);
-      localStorage.setItem("haystackSignups", JSON.stringify(currentSignups));
-      rebuildDropdown();
+      chosen.forEach(function (item) {
+        currentSignups.push({
+          name: name,
+          party: party,
+          item: item,
+          amount: suggested(item),
+          notes: notes
+        });
+        takenItems.add(item);
+      });
+      persist();
+      rebuildItemList();
       renderSignups();
-
-      document.getElementById("signup").reset();
-      document.getElementById("totalPeople").value = 25;
-      updateAmount();
+      statusEl.textContent = currentSignups.length + " signup(s) in this browser.";
+      successEl.style.display = "block";
+      successEl.innerHTML = "<strong>Thanks, " + escapeHtml(name) + ".</strong> You're bringing " +
+        chosen.map(escapeHtml).join(", ") + ".";
+      document.getElementById("name").value = "";
+      document.getElementById("notes").value = "";
+      document.getElementById("party").value = "1";
     });
 
-    itemSelect.addEventListener("change", updateAmount);
-    totalInput.addEventListener("input", updateAmount);
-
+    totalInput.addEventListener("input", rebuildItemList);
     loadFromSheet();
-    updateAmount();
   </script>
 </body>
 </html>
