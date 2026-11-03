@@ -70,14 +70,10 @@
       width: 100%;
     }
     button:hover { background: var(--accent-light); }
-    .note { font-size: 0.875rem; color: var(--muted); margin-top: 1.25rem; }
-    .success {
-      display: none;
-      background: #eef7f1;
+    button.secondary {
+      background: transparent;
+      color: var(--accent);
       border: 1px solid var(--accent);
-      padding: 1rem;
-      border-radius: 8px;
-      margin-top: 1rem;
     }
     .choice {
       display: flex;
@@ -95,10 +91,27 @@
       margin-left: auto;
       color: var(--muted);
       font-size: 0.85rem;
-      font-weight: 500;
+      font-weight: 600;
       white-space: nowrap;
+      text-align: right;
+    }
+    .tag {
+      display: inline-block;
+      margin-left: 0.35rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: #eef7f1;
+      border-radius: 999px;
+      padding: 0.05rem 0.45rem;
+      vertical-align: middle;
     }
     #signups { margin-top: 0.5rem; }
+    .headcount {
+      font-weight: 700;
+      color: var(--accent);
+      margin: 0 0 0.75rem;
+    }
     .signup-item {
       padding: 0.6rem 0.75rem;
       border-bottom: 1px solid var(--border);
@@ -107,10 +120,37 @@
     .signup-item:last-child { border-bottom: none; }
     .signup-item strong { color: var(--accent); }
     .empty { color: var(--muted); font-style: italic; padding: 0.5rem 0; }
-    footer { text-align: center; margin-top: 2rem; font-size: 0.875rem; color: var(--muted); }
-    a { color: var(--accent); }
-    .status { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem; }
+    .success {
+      display: none;
+      background: #eef7f1;
+      border: 1px solid var(--accent);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+    footer { text-align: center; margin-top: 1rem; font-size: 0.875rem; color: var(--muted); }
     .hint { font-size: 0.85rem; color: var(--muted); font-weight: 400; margin: 0 0 0.5rem; }
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(45, 42, 38, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal[hidden] { display: none; }
+    .modal-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 1.25rem;
+      width: min(420px, 100%);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    }
+    .modal-card p { margin-top: 0; }
+    .modal-actions { display: flex; gap: 0.5rem; }
+    .modal-actions button { margin-top: 0.75rem; }
+    .error { color: #9b2c2c; font-size: 0.875rem; min-height: 1.2rem; }
   </style>
 </head>
 <body>
@@ -123,26 +163,18 @@
     <div class="card">
       <p style="margin-top:0">
         Layered plates of chips, beans, rice, cheese, lettuce, tomatoes, olives, salsa, guacamole, onions, ranch, and sour cream.
-        Plus apple juice, grape juice, and dessert.
+        Plus apple juice, grape juice, and dessert. Rice is optional.
       </p>
 
       <form id="signup">
         <label for="name">Your name</label>
         <input type="text" id="name" name="name" required placeholder="Jane Doe" />
 
-        <div class="row">
-          <div>
-            <label for="party"># in your party (including you)</label>
-            <input type="number" id="party" name="party" min="1" value="1" required />
-          </div>
-          <div>
-            <label for="totalPeople">Current total people (for scaling)</label>
-            <input type="number" id="totalPeople" name="totalPeople" min="1" value="25" />
-          </div>
-        </div>
+        <label for="party"># in your party (including you)</label>
+        <input type="number" id="party" name="party" min="1" value="1" required />
 
         <label>What are you bringing?</label>
-        <p class="hint">Check every item you will bring. Amounts scale to the total above.</p>
+        <p class="hint">Check every item you will bring. Amounts follow the live headcount, including your party.</p>
         <div id="itemList"></div>
 
         <label for="notes">Notes (optional)</label>
@@ -156,19 +188,31 @@
 
     <div class="card">
       <h2 style="margin-top:0; font-size:1.25rem; color:var(--accent);">Already Taken</h2>
-      <div class="status" id="status">Loading current signups…</div>
+      <p class="headcount" id="headcount"></p>
       <div id="signups"></div>
+      <button type="button" class="secondary" id="resetBtn">Reset signups</button>
     </div>
 
-    <footer>
-      Built for the Nov 7 Sabbath potluck • Claimed items leave the list
-    </footer>
+    <footer>Claimed items leave the list. Rice stays available.</footer>
+  </div>
+
+  <div class="modal" id="resetModal" hidden>
+    <div class="modal-card">
+      <p><strong>Reset every signup?</strong></p>
+      <p>Enter the 4-digit code to clear the list.</p>
+      <input id="resetCode" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="4-digit code" />
+      <div class="error" id="resetError"></div>
+      <div class="modal-actions">
+        <button type="button" id="resetConfirm">Clear signups</button>
+        <button type="button" class="secondary" id="resetCancel">Cancel</button>
+      </div>
+    </div>
   </div>
 
   <script>
     const ALL_ITEMS = [
       "Corn or Tortilla Chips (Fritos or sturdy)",
-      "Seasoned Beans or Vegetarian Chili",
+      "Seasoned Beans",
       "Shredded Cheese (cheddar or Mexican blend)",
       "Shredded Lettuce (iceberg or romaine)",
       "Diced Tomatoes",
@@ -184,9 +228,11 @@
       "Dessert"
     ];
 
+    const OPTIONAL = { "Cooked Rice": true };
+
     const rates = {
       "Corn or Tortilla Chips (Fritos or sturdy)": { amount: 2.5, unit: "oz" },
-      "Seasoned Beans or Vegetarian Chili": { amount: 0.6, unit: "cups" },
+      "Seasoned Beans": { amount: 0.6, unit: "cups" },
       "Shredded Cheese (cheddar or Mexican blend)": { amount: 0.3, unit: "cups" },
       "Shredded Lettuce (iceberg or romaine)": { amount: 1.25, unit: "cups" },
       "Diced Tomatoes": { amount: 0.25, unit: "cups" },
@@ -202,28 +248,20 @@
       "Dessert": { amount: 1, unit: "serving" }
     };
 
-    const SHEET_CSV = "https://docs.google.com/spreadsheets/d/1cU5V_bjtLYUW6svLds0cJe4aTOxzVsoFFOweY1T9pkI/export?format=csv&gid=490461671";
     const STORAGE_KEY = "haystackSignups";
+    const RESET_CODE = "7777";
 
-    const totalInput = document.getElementById("totalPeople");
+    const nameInput = document.getElementById("name");
+    const partyInput = document.getElementById("party");
     const itemList = document.getElementById("itemList");
     const signupsDiv = document.getElementById("signups");
-    const statusEl = document.getElementById("status");
+    const headcountEl = document.getElementById("headcount");
     const successEl = document.getElementById("success");
+    const resetModal = document.getElementById("resetModal");
+    const resetCode = document.getElementById("resetCode");
+    const resetError = document.getElementById("resetError");
 
-    let takenItems = new Set();
     let currentSignups = [];
-
-    function headcount() {
-      return Math.max(1, parseInt(totalInput.value, 10) || 25);
-    }
-
-    function suggested(item) {
-      const rate = rates[item];
-      if (!rate) return "";
-      const totalAmount = Math.round(rate.amount * headcount() * 10) / 10;
-      return totalAmount + " " + rate.unit;
-    }
 
     function escapeHtml(str) {
       return String(str || "").replace(/[&<>"']/g, function (m) {
@@ -231,34 +269,93 @@
       });
     }
 
+    function normalizeItem(item) {
+      if (item === "Seasoned Beans or Vegetarian Chili") return "Seasoned Beans";
+      return item;
+    }
+
+    function partyOf(value) {
+      const n = parseInt(value, 10);
+      return n > 0 ? n : 1;
+    }
+
+    function households() {
+      const map = new Map();
+      currentSignups.forEach(function (s) {
+        const key = s.name.trim().toLowerCase();
+        const size = partyOf(s.party);
+        map.set(key, Math.max(map.get(key) || 0, size));
+      });
+      return map;
+    }
+
+    function committedPeople() {
+      let sum = 0;
+      households().forEach(function (n) { sum += n; });
+      return sum;
+    }
+
+    function planningPeople() {
+      const map = households();
+      const name = nameInput.value.trim().toLowerCase();
+      const party = partyOf(partyInput.value);
+      if (name) map.set(name, Math.max(map.get(name) || 0, party));
+      let sum = 0;
+      map.forEach(function (n) { sum += n; });
+      return sum;
+    }
+
+    function portionText(item, people) {
+      const rate = rates[item];
+      if (!rate || !people) return "Amount updates as people sign up";
+      const total = Math.round(rate.amount * people * 10) / 10;
+      return "Bring " + total + " " + rate.unit + " for " + people;
+    }
+
+    function takenSet() {
+      const taken = new Set();
+      currentSignups.forEach(function (s) {
+        if (!OPTIONAL[s.item]) taken.add(s.item);
+      });
+      return taken;
+    }
+
     function rebuildItemList() {
       const checked = new Set(
         Array.from(itemList.querySelectorAll("input:checked")).map(function (el) { return el.value; })
       );
-      const available = ALL_ITEMS.filter(function (item) { return !takenItems.has(item); });
+      const taken = takenSet();
+      const people = planningPeople();
+      const available = ALL_ITEMS.filter(function (item) { return !taken.has(item); });
       if (!available.length) {
         itemList.innerHTML = '<div class="empty">Every item is claimed.</div>';
         return;
       }
       itemList.innerHTML = available.map(function (item) {
+        const tag = OPTIONAL[item] ? '<span class="tag">optional</span>' : "";
         return '<label class="choice">' +
           '<input type="checkbox" name="item" value="' + escapeHtml(item) + '"' + (checked.has(item) ? " checked" : "") + " />" +
-          "<span>" + escapeHtml(item) + "</span>" +
-          '<span class="amt">' + escapeHtml(suggested(item)) + "</span>" +
+          "<span>" + escapeHtml(item) + tag + "</span>" +
+          '<span class="amt">' + escapeHtml(portionText(item, people)) + "</span>" +
           "</label>";
       }).join("");
     }
 
     function renderSignups() {
-      if (currentSignups.length === 0) {
+      const people = committedPeople();
+      headcountEl.textContent = people
+        ? people + (people === 1 ? " person coming" : " people coming")
+        : "No one signed up yet";
+      if (!currentSignups.length) {
         signupsDiv.innerHTML = '<div class="empty">No signups yet. Be the first!</div>';
         return;
       }
       signupsDiv.innerHTML = currentSignups.map(function (s) {
         return '<div class="signup-item">' +
-          "<strong>" + escapeHtml(s.item) + "</strong> — " + escapeHtml(s.name) +
-          " (party of " + escapeHtml(s.party) + ")" +
-          (s.amount ? "<br><span style=\"color:var(--muted);font-size:0.85rem;\">" + escapeHtml(s.amount) + "</span>" : "") +
+          "<strong>" + escapeHtml(s.item) + "</strong>" +
+          (OPTIONAL[s.item] ? '<span class="tag">optional</span>' : "") +
+          " — " + escapeHtml(s.name) + " (party of " + escapeHtml(s.party) + ")" +
+          '<br><span class="amt" style="color:var(--accent);">' + escapeHtml(portionText(s.item, people)) + "</span>" +
           (s.notes ? "<br><span style=\"color:var(--muted);font-size:0.85rem;\">" + escapeHtml(s.notes) + "</span>" : "") +
           "</div>";
       }).join("");
@@ -268,98 +365,83 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(currentSignups));
     }
 
-    function applySignups(rows, status) {
-      currentSignups = rows;
-      takenItems = new Set(rows.map(function (s) { return s.item; }));
-      statusEl.textContent = status;
+    function load() {
+      let saved = [];
+      try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch (e) { saved = []; }
+      currentSignups = saved.map(function (s) {
+        return {
+          name: s.name || "",
+          party: String(partyOf(s.party)),
+          item: normalizeItem(s.item || ""),
+          notes: s.notes || ""
+        };
+      }).filter(function (s) { return s.name && ALL_ITEMS.indexOf(s.item) !== -1; });
+      persist();
       rebuildItemList();
       renderSignups();
     }
 
-    async function loadFromSheet() {
-      statusEl.textContent = "Loading current signups…";
-      try {
-        const res = await fetch(SHEET_CSV);
-        if (!res.ok) throw new Error("Sheet not public or unreachable");
-        const text = await res.text();
-        if (text.indexOf("<!doctype html") !== -1 || text.indexOf("<html") !== -1) {
-          throw new Error("Sheet is not public");
-        }
-        const lines = text.trim().split(/\r?\n/).slice(1);
-        const rows = [];
-        lines.forEach(function (line) {
-          if (!line.trim()) return;
-          const cols = parseCSVLine(line);
-          const name = (cols[0] || "").trim();
-          const party = (cols[1] || "").trim();
-          const item = (cols[2] || "").trim();
-          const amount = (cols[3] || "").trim();
-          const notes = (cols[4] || "").trim();
-          if (name && item && name.toLowerCase().indexOf("example") !== 0 && ALL_ITEMS.indexOf(item) !== -1) {
-            rows.push({ name: name, party: party, item: item, amount: amount, notes: notes });
-          }
-        });
-        applySignups(rows, "Loaded " + rows.length + " signup(s).");
-      } catch (err) {
-        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-        applySignups(saved, "Showing signups saved in this browser.");
-      }
-    }
-
-    function parseCSVLine(line) {
-      const result = [];
-      let current = "";
-      let inQuotes = false;
-      for (let i = 0; i < line.length; i++) {
-        const c = line[i];
-        if (c === '"') {
-          inQuotes = !inQuotes;
-        } else if (c === "," && !inQuotes) {
-          result.push(current);
-          current = "";
-        } else {
-          current += c;
-        }
-      }
-      result.push(current);
-      return result.map(function (s) { return s.replace(/^"|"$/g, "").replace(/""/g, '"'); });
-    }
-
     document.getElementById("signup").addEventListener("submit", function (e) {
       e.preventDefault();
-      const name = document.getElementById("name").value.trim();
-      const party = document.getElementById("party").value;
+      const name = nameInput.value.trim();
+      const party = String(partyOf(partyInput.value));
       const notes = document.getElementById("notes").value.trim();
-      const chosen = Array.from(itemList.querySelectorAll("input:checked")).map(function (el) { return el.value; });
+      const taken = takenSet();
+      const chosen = Array.from(itemList.querySelectorAll("input:checked"))
+        .map(function (el) { return el.value; })
+        .filter(function (item) { return !taken.has(item); });
       if (!chosen.length) {
         successEl.style.display = "block";
         successEl.innerHTML = "<strong>Pick at least one item.</strong>";
         return;
       }
       chosen.forEach(function (item) {
-        currentSignups.push({
-          name: name,
-          party: party,
-          item: item,
-          amount: suggested(item),
-          notes: notes
-        });
-        takenItems.add(item);
+        currentSignups.push({ name: name, party: party, item: item, notes: notes });
+      });
+      currentSignups.forEach(function (s) {
+        if (s.name.trim().toLowerCase() === name.toLowerCase()) s.party = party;
       });
       persist();
       rebuildItemList();
       renderSignups();
-      statusEl.textContent = currentSignups.length + " signup(s) in this browser.";
       successEl.style.display = "block";
       successEl.innerHTML = "<strong>Thanks, " + escapeHtml(name) + ".</strong> You're bringing " +
         chosen.map(escapeHtml).join(", ") + ".";
-      document.getElementById("name").value = "";
+      nameInput.value = "";
       document.getElementById("notes").value = "";
-      document.getElementById("party").value = "1";
+      partyInput.value = "1";
+      rebuildItemList();
     });
 
-    totalInput.addEventListener("input", rebuildItemList);
-    loadFromSheet();
+    nameInput.addEventListener("input", rebuildItemList);
+    partyInput.addEventListener("input", rebuildItemList);
+
+    document.getElementById("resetBtn").addEventListener("click", function () {
+      resetCode.value = "";
+      resetError.textContent = "";
+      resetModal.hidden = false;
+      resetCode.focus();
+    });
+    document.getElementById("resetCancel").addEventListener("click", function () {
+      resetModal.hidden = true;
+    });
+    resetModal.addEventListener("click", function (e) {
+      if (e.target === resetModal) resetModal.hidden = true;
+    });
+    document.getElementById("resetConfirm").addEventListener("click", function () {
+      if (resetCode.value.trim() !== RESET_CODE) {
+        resetError.textContent = "That code is not right.";
+        return;
+      }
+      currentSignups = [];
+      localStorage.removeItem(STORAGE_KEY);
+      successEl.style.display = "none";
+      resetModal.hidden = true;
+      rebuildItemList();
+      renderSignups();
+    });
+
+    load();
   </script>
 </body>
 </html>
