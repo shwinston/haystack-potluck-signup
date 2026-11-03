@@ -189,7 +189,7 @@
 
     <div class="card">
       <h2 style="margin-top:0; font-size:1.25rem; color:var(--accent);">Already Taken</h2>
-      <p class="headcount" id="headcount"></p>
+      <p class="headcount" id="headcount">Every item is enough for 25 people.</p>
       <div id="signups"></div>
       <button type="button" class="secondary" id="resetBtn">Reset signups</button>
     </div>
@@ -285,8 +285,8 @@
     function portionText(item) {
       const rate = rates[item];
       if (!rate) return "";
-      const total = Math.round(rate.amount * HEADCOUNT * 10) / 10;
-      return "Bring " + total + " " + rate.unit + " for " + HEADCOUNT;
+      const total = Math.round(rate.amount * 25 * 10) / 10;
+      return "Enough for 25 people: " + total + " " + rate.unit;
     }
 
     function takenSet() {
@@ -318,7 +318,7 @@
     }
 
     function renderSignups() {
-      headcountEl.textContent = "Every amount feeds 25 people.";
+      headcountEl.textContent = "Every item is enough for 25 people.";
       if (!currentSignups.length) {
         signupsDiv.innerHTML = '<div class="empty">No signups yet. Be the first!</div>';
         return;
@@ -327,7 +327,7 @@
         return '<div class="signup-item">' +
           "<strong>" + escapeHtml(s.item) + "</strong>" +
           (OPTIONAL[s.item] ? '<span class="tag">optional</span>' : "") +
-          " — " + escapeHtml(s.name) + " (party of " + escapeHtml(s.party) + ")" +
+          " — " + escapeHtml(s.name) + " · " + escapeHtml(s.party) + " attending" +
           '<br><span class="amt" style="color:var(--accent);">' + escapeHtml(portionText(s.item)) + "</span>" +
           (s.notes ? "<br><span style=\"color:var(--muted);font-size:0.85rem;\">" + escapeHtml(s.notes) + "</span>" : "") +
           "</div>";
