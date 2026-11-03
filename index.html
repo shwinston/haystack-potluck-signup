@@ -174,7 +174,7 @@
         <input type="number" id="party" name="party" min="1" value="1" required />
 
         <label>What are you bringing?</label>
-        <p class="hint">Check every item you will bring. Amounts follow the live headcount, including your party.</p>
+        <p class="hint">Check every item you will bring. Each amount feeds 25 people.</p>
         <div id="itemList"></div>
 
         <label for="notes">Notes (optional)</label>
@@ -279,37 +279,13 @@
       return n > 0 ? n : 1;
     }
 
-    function households() {
-      const map = new Map();
-      currentSignups.forEach(function (s) {
-        const key = s.name.trim().toLowerCase();
-        const size = partyOf(s.party);
-        map.set(key, Math.max(map.get(key) || 0, size));
-      });
-      return map;
-    }
+    const HEADCOUNT = 25;
 
-    function committedPeople() {
-      let sum = 0;
-      households().forEach(function (n) { sum += n; });
-      return sum;
-    }
-
-    function planningPeople() {
-      const map = households();
-      const name = nameInput.value.trim().toLowerCase();
-      const party = partyOf(partyInput.value);
-      if (name) map.set(name, Math.max(map.get(name) || 0, party));
-      let sum = 0;
-      map.forEach(function (n) { sum += n; });
-      return sum;
-    }
-
-    function portionText(item, people) {
+    function portionText(item) {
       const rate = rates[item];
-      if (!rate || !people) return "Amount updates as people sign up";
-      const total = Math.round(rate.amount * people * 10) / 10;
-      return "Bring " + total + " " + rate.unit + " for " + people;
+      if (!rate) return "";
+      const total = Math.round(rate.amount * HEADCOUNT * 10) / 10;
+      return "Bring " + total + " " + rate.unit + " for " + HEADCOUNT;
     }
 
     function takenSet() {
@@ -325,7 +301,6 @@
         Array.from(itemList.querySelectorAll("input:checked")).map(function (el) { return el.value; })
       );
       const taken = takenSet();
-      const people = planningPeople();
       const available = ALL_ITEMS.filter(function (item) { return !taken.has(item); });
       if (!available.length) {
         itemList.innerHTML = '<div class="empty">Every item is claimed.</div>';
@@ -336,16 +311,13 @@
         return '<label class="choice">' +
           '<input type="checkbox" name="item" value="' + escapeHtml(item) + '"' + (checked.has(item) ? " checked" : "") + " />" +
           "<span>" + escapeHtml(item) + tag + "</span>" +
-          '<span class="amt">' + escapeHtml(portionText(item, people)) + "</span>" +
+          '<span class="amt">' + escapeHtml(portionText(item)) + "</span>" +
           "</label>";
       }).join("");
     }
 
     function renderSignups() {
-      const people = committedPeople();
-      headcountEl.textContent = people
-        ? people + (people === 1 ? " person coming" : " people coming")
-        : "No one signed up yet";
+      headcountEl.textContent = "Every amount feeds 25 people.";
       if (!currentSignups.length) {
         signupsDiv.innerHTML = '<div class="empty">No signups yet. Be the first!</div>';
         return;
@@ -355,7 +327,7 @@
           "<strong>" + escapeHtml(s.item) + "</strong>" +
           (OPTIONAL[s.item] ? '<span class="tag">optional</span>' : "") +
           " — " + escapeHtml(s.name) + " (party of " + escapeHtml(s.party) + ")" +
-          '<br><span class="amt" style="color:var(--accent);">' + escapeHtml(portionText(s.item, people)) + "</span>" +
+          '<br><span class="amt" style="color:var(--accent);">' + escapeHtml(portionText(s.item)) + "</span>" +
           (s.notes ? "<br><span style=\"color:var(--muted);font-size:0.85rem;\">" + escapeHtml(s.notes) + "</span>" : "") +
           "</div>";
       }).join("");
@@ -412,9 +384,6 @@
       partyInput.value = "1";
       rebuildItemList();
     });
-
-    nameInput.addEventListener("input", rebuildItemList);
-    partyInput.addEventListener("input", rebuildItemList);
 
     document.getElementById("resetBtn").addEventListener("click", function () {
       resetCode.value = "";
