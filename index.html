@@ -280,13 +280,26 @@
       return n > 0 ? n : 1;
     }
 
-    const HEADCOUNT = 25;
+    const PORTIONS = {
+      "Corn or Tortilla Chips (Fritos or sturdy)": "62.5 oz",
+      "Seasoned Beans": "15 cups",
+      "Shredded Cheese (cheddar or Mexican blend)": "7.5 cups",
+      "Shredded Lettuce (iceberg or romaine)": "31.3 cups",
+      "Diced Tomatoes": "6.3 cups",
+      "Sliced Black Olives": "2.5 cups",
+      "Salsa": "3.8 cups",
+      "Guacamole": "3.8 cups",
+      "Cooked Rice": "12.5 cups",
+      "Diced Onions": "2.5 cups",
+      "Ranch Dressing": "2.5 cups",
+      "Sour Cream": "2.5 cups",
+      "Apple Juice": "150 oz",
+      "Grape Juice": "150 oz",
+      "Dessert": "25 servings"
+    };
 
     function portionText(item) {
-      const rate = rates[item];
-      if (!rate) return "";
-      const total = Math.round(rate.amount * 25 * 10) / 10;
-      return "Enough for 25 people: " + total + " " + rate.unit;
+      return "Enough for 25 people: " + (PORTIONS[item] || "");
     }
 
     function takenSet() {
