@@ -2,17 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sabbath Haystack Potluck Signup – Nov 7, 2026</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#2c6e49" />
+  <title>Haystack Potluck Signup – Nov 7, 2026</title>
+  <meta name="description" content="Sign up to bring a dish for the Ceres SDA Church haystack potluck on Sabbath, November 7, 2026." />
+  <link rel="canonical" href="https://shwinston.github.io/haystack-potluck-signup/" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ceres SDA Church" />
+  <meta property="og:title" content="Haystack Potluck Signup — Nov 7, 2026" />
+  <meta property="og:description" content="Claim a dish for the Ceres SDA Church haystack potluck on Sabbath, November 7, 2026. Everyone shares the same list." />
+  <meta property="og:url" content="https://shwinston.github.io/haystack-potluck-signup/" />
+  <meta property="og:image" content="https://shwinston.github.io/haystack-potluck-signup/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Haystack potluck signup for Ceres SDA Church on November 7, 2026" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Haystack Potluck Signup — Nov 7, 2026" />
+  <meta name="twitter:description" content="Claim a dish for the Ceres SDA Church haystack potluck. Everyone shares the same list." />
+  <meta name="twitter:image" content="https://shwinston.github.io/haystack-potluck-signup/og.png" />
   <style>
     :root {
-      --bg: #f7f3eb;
+      --bg: #f4efe4;
       --card: #fffdf8;
-      --accent: #2c6e49;
-      --accent-light: #4a9c6d;
-      --text: #2d2a26;
-      --muted: #6b6560;
-      --border: #e4dccf;
+      --accent: #245c3c;
+      --accent-light: #3d8a5c;
+      --text: #2a2622;
+      --muted: #5c564e;
+      --border: #e0d5c4;
+      --danger: #8d2b2b;
     }
     * { box-sizing: border-box; }
     body {
@@ -20,189 +39,273 @@
       background: var(--bg);
       color: var(--text);
       margin: 0;
-      padding: 1.5rem 1rem 3rem;
-      line-height: 1.5;
+      padding: 1.25rem 1rem 3rem;
+      line-height: 1.45;
+      overflow-wrap: break-word;
     }
-    .container { max-width: 680px; margin: 0 auto; }
-    header { text-align: center; margin-bottom: 1.5rem; }
-    h1 { font-size: 1.75rem; margin: 0 0 0.25rem; color: var(--accent); }
-    .subtitle { color: var(--muted); margin: 0; }
+    .container { max-width: 40rem; margin: 0 auto; }
+    header { margin-bottom: 1rem; }
+    .eyebrow {
+      margin: 0 0 0.2rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    h1 {
+      font-size: 1.85rem;
+      line-height: 1.15;
+      margin: 0;
+      color: var(--accent);
+    }
+    .subtitle { color: var(--muted); margin: 0.35rem 0 0; }
     .card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      margin-bottom: 1.5rem;
+      border-radius: 14px;
+      padding: 1.1rem 1rem 1.2rem;
+      box-shadow: 0 1px 2px rgba(60, 40, 10, 0.04);
+      margin-bottom: 1rem;
     }
-    label { display: block; font-weight: 600; margin: 1rem 0 0.35rem; }
-    input, textarea {
+    h2 { margin: 0 0 0.75rem; font-size: 1.25rem; color: var(--accent); }
+    .lede { margin: 0.85rem 0 0; }
+    .event-list {
+      display: grid;
+      grid-template-columns: 5.6rem minmax(0, 1fr);
+      gap: 0.45rem 0.75rem;
+      margin: 0;
+    }
+    .event-list dt {
+      margin: 0;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .event-list dd { margin: 0; }
+    .utensils {
+      margin: 0.9rem 0 0;
+      padding: 0.7rem 0.8rem;
+      background: #eef6f0;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    label { display: block; font-weight: 700; margin: 1rem 0 0.4rem; }
+    input, textarea, select {
       width: 100%;
-      padding: 0.65rem 0.75rem;
+      padding: 0.75rem 0.8rem;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 10px;
+      font: inherit;
       font-size: 1rem;
       background: white;
+      color: inherit;
     }
-    input[type="checkbox"] {
-      width: 1.1rem;
-      height: 1.1rem;
-      padding: 0;
-      margin: 0.15rem 0 0;
-      flex: 0 0 auto;
-    }
-    input:focus, textarea:focus {
+    textarea { min-height: 5.5rem; resize: vertical; }
+    input:focus, textarea:focus, select:focus {
       outline: 2px solid var(--accent-light);
       border-color: var(--accent);
     }
-    .row { display: flex; gap: 1rem; }
-    .row > * { flex: 1; }
     button {
       background: var(--accent);
       color: white;
       border: none;
-      padding: 0.75rem 1.25rem;
-      border-radius: 8px;
+      min-height: 3rem;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      font: inherit;
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       margin-top: 1rem;
       width: 100%;
+      touch-action: manipulation;
     }
     button:hover { background: var(--accent-light); }
+    button:disabled { opacity: 0.65; cursor: default; }
+    button:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 2px; }
     button.secondary {
       background: transparent;
       color: var(--accent);
-      border: 1px solid var(--accent);
+      border: 1.5px solid var(--accent);
+    }
+    button.secondary:hover { background: #eef6f0; }
+    button.small {
+      width: auto;
+      min-height: 2.75rem;
+      margin-top: 0.7rem;
+      padding: 0.55rem 0.9rem;
     }
     .choice {
       display: flex;
       align-items: flex-start;
-      gap: 0.65rem;
-      margin: 0 0 0.4rem;
-      padding: 0.6rem 0.7rem;
+      gap: 0.75rem;
+      margin: 0 0 0.5rem;
+      padding: 0.85rem 0.85rem;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 12px;
       background: white;
-      font-weight: 500;
       cursor: pointer;
+      min-height: 3.25rem;
     }
-    .choice .amt {
-      margin-left: auto;
+    .choice:focus-within {
+      outline: 2px solid var(--accent-light);
+      border-color: var(--accent);
+    }
+    .choice input {
+      width: 1.35rem;
+      height: 1.35rem;
+      margin: 0.1rem 0 0;
+      padding: 0;
+      flex: 0 0 auto;
+      accent-color: var(--accent);
+    }
+    .choice-text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+    .choice-name { font-weight: 700; line-height: 1.3; }
+    .choice-amt, .brought-amt {
       color: var(--muted);
-      font-size: 0.85rem;
       font-weight: 600;
-      white-space: nowrap;
-      text-align: right;
+      font-size: 0.95rem;
+      line-height: 1.35;
     }
     .tag {
       display: inline-block;
       margin-left: 0.35rem;
       font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--accent);
-      background: #eef7f1;
-      border-radius: 999px;
-      padding: 0.05rem 0.45rem;
-      vertical-align: middle;
-    }
-    #signups { margin-top: 0.5rem; }
-    .headcount {
       font-weight: 700;
       color: var(--accent);
-      margin: 0 0 0.75rem;
+      background: #e7f4ec;
+      border-radius: 999px;
+      padding: 0.08rem 0.45rem;
+      vertical-align: middle;
     }
+    .hint { font-size: 0.92rem; color: var(--muted); font-weight: 500; margin: 0 0 0.65rem; }
+    .headcount { font-weight: 800; color: var(--accent); font-size: 1.15rem; margin: 0 0 0.35rem; }
+    .updated { margin: 0.35rem 0 0.8rem; color: var(--muted); font-size: 0.85rem; }
     .signup-item {
-      padding: 0.6rem 0.75rem;
+      padding: 0.85rem 0;
       border-bottom: 1px solid var(--border);
-      font-size: 0.95rem;
     }
     .signup-item:last-child { border-bottom: none; }
-    .signup-item strong { color: var(--accent); }
-    .empty { color: var(--muted); font-style: italic; padding: 0.5rem 0; }
-    .success {
-      display: none;
-      background: #eef7f1;
-      border: 1px solid var(--accent);
-      padding: 1rem;
-      border-radius: 8px;
-      margin-top: 1rem;
+    .signup-who { margin: 0; font-size: 1.02rem; }
+    .signup-who strong { color: var(--accent); }
+    .brought { list-style: none; margin: 0.45rem 0 0; padding: 0; }
+    .brought li { display: flex; flex-direction: column; gap: 0.05rem; padding: 0.28rem 0; }
+    .brought-name { font-weight: 700; }
+    .notes { margin: 0.35rem 0 0; color: var(--muted); font-size: 0.92rem; }
+    .empty { color: var(--muted); font-style: italic; margin: 0.25rem 0 0.5rem; }
+    .success, .form-error, .banner {
+      border-radius: 10px;
+      padding: 0.8rem 0.9rem;
+      margin: 0.8rem 0 0;
     }
-    footer { text-align: center; margin-top: 1rem; font-size: 0.875rem; color: var(--muted); }
-    .hint { font-size: 0.85rem; color: var(--muted); font-weight: 400; margin: 0 0 0.5rem; }
+    .success { display: none; background: #e7f4ec; border: 1px solid #b7dcc4; }
+    .form-error, .banner {
+      background: #fff1f1;
+      border: 1px solid #ecc4c4;
+      color: var(--danger);
+    }
+    .banner { margin: 0 0 1rem; }
+    .banner[hidden], .form-error[hidden], .modal[hidden] { display: none; }
+    .actions { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.4rem; }
+    .actions button { margin-top: 0; }
+    footer { text-align: center; margin-top: 0.5rem; font-size: 0.875rem; color: var(--muted); }
     .modal {
       position: fixed;
       inset: 0;
-      background: rgba(45, 42, 38, 0.45);
+      background: rgba(42, 38, 34, 0.5);
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
-      padding: 1rem;
+      padding: 0.75rem;
+      z-index: 5;
     }
-    .modal[hidden] { display: none; }
     .modal-card {
       background: var(--card);
-      border-radius: 12px;
-      padding: 1.25rem;
-      width: min(420px, 100%);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      border-radius: 14px;
+      padding: 1.1rem 1rem 1rem;
+      width: min(26rem, 100%);
+      max-height: min(90vh, 40rem);
+      overflow: auto;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
     }
-    .modal-card p { margin-top: 0; }
-    .modal-actions { display: flex; gap: 0.5rem; }
-    .modal-actions button { margin-top: 0.75rem; }
-    .error { color: #9b2c2c; font-size: 0.875rem; min-height: 1.2rem; }
+    .modal-card h3 { margin: 0 0 0.4rem; color: var(--accent); }
+    .modal-card p { margin: 0.35rem 0; }
+    .modal-actions { display: flex; flex-direction: column; gap: 0.5rem; }
+    .modal-actions button { margin-top: 0.35rem; }
+    .error { color: var(--danger); font-size: 0.9rem; min-height: 1.2rem; margin: 0.45rem 0 0; }
+    @media (min-width: 640px) {
+      body { padding-top: 2rem; }
+      .card { padding: 1.35rem 1.4rem 1.45rem; }
+      .modal { align-items: center; }
+      .modal-actions, .actions.pair { flex-direction: row; }
+      .modal-actions button, .actions.pair button { flex: 1; }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
+      <p class="eyebrow">Vegetarian</p>
       <h1>Haystack Potluck Signup</h1>
-      <p class="subtitle">Sabbath • November 7, 2026 • Vegetarian</p>
+      <p class="subtitle">One shared list. When you claim an item, everyone else sees it.</p>
     </header>
 
-    <div class="card">
-      <p style="margin-top:0">
+    <div class="banner" id="banner" hidden></div>
+
+    <section class="card" id="eventCard" aria-labelledby="eventHeading">
+      <h2 id="eventHeading">Event details</h2>
+      <dl class="event-list" id="eventDetails"></dl>
+      <p class="utensils" id="utensils"></p>
+      <p class="lede">
         Layered plates of chips, beans, rice, cheese, lettuce, tomatoes, olives, salsa, guacamole, onions, ranch, and sour cream.
         Plus apple juice, grape juice, and dessert. Rice is optional.
       </p>
+    </section>
 
+    <section class="card">
+      <h2>What you'll bring</h2>
       <form id="signup">
         <label for="name">Your name</label>
-        <input type="text" id="name" name="name" required placeholder="Jane Doe" />
+        <input type="text" id="name" name="name" required maxlength="80" autocomplete="name" placeholder="Jane Doe" />
 
         <label for="party">How many in your party are coming? (including you)</label>
-        <input type="number" id="party" name="party" min="1" value="1" required />
-        <p class="hint">Attendance only. It does not change how much to bring. Every item feeds 25 people.</p>
+        <input type="number" id="party" name="party" min="1" max="99" value="1" required inputmode="numeric" />
+        <p class="hint">Attendance only. It does not change how much to bring. Every item feeds 25 people. Signing up again does not change an earlier signup.</p>
 
         <label>What are you bringing?</label>
-        <p class="hint">Check every item you will bring. Each amount feeds 25 people.</p>
+        <p class="hint">Check every item you will bring. The amount under each name is the total for 25 people. Rice can be claimed more than once.</p>
         <div id="itemList"></div>
 
         <label for="notes">Notes (optional)</label>
-        <textarea id="notes" name="notes" rows="2" placeholder="Any details..."></textarea>
+        <textarea id="notes" name="notes" maxlength="400" placeholder="Any details..."></textarea>
 
-        <button type="submit">Submit Signup</button>
+        <button type="submit" id="submitBtn">Sign up</button>
       </form>
+      <div class="form-error" id="formError" hidden></div>
+      <div class="success" id="success" role="status"></div>
+    </section>
 
-      <div class="success" id="success"></div>
-    </div>
-
-    <div class="card">
-      <h2 style="margin-top:0; font-size:1.25rem; color:var(--accent);">Already Taken</h2>
-      <p class="headcount" id="headcount">Every item is enough for 25 people.</p>
+    <section class="card" aria-labelledby="takenHeading">
+      <h2 id="takenHeading">Already Taken</h2>
+      <p class="headcount" id="headcount">0 people signed up so far</p>
+      <p class="hint">Every item is enough for 25 people. Rice stays available.</p>
+      <p class="updated" id="updated">Loading the shared list…</p>
       <div id="signups"></div>
-      <button type="button" class="secondary" id="resetBtn">Reset signups</button>
-    </div>
+      <div class="actions">
+        <button type="button" class="secondary" id="removeBtn">Remove one signup</button>
+        <button type="button" class="secondary" id="resetBtn">Reset all signups</button>
+      </div>
+    </section>
 
-    <footer>Claimed items leave the list. Rice stays available.</footer>
+    <footer>Claimed items leave the list for everyone. You can cancel your own signup from this device.</footer>
   </div>
 
   <div class="modal" id="resetModal" hidden>
     <div class="modal-card">
-      <p><strong>Reset every signup?</strong></p>
-      <p>Enter the 4-digit code to clear the list.</p>
-      <input id="resetCode" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="4-digit code" />
-      <div class="error" id="resetError"></div>
+      <h3>Reset every signup?</h3>
+      <p>Enter the reset code to clear the whole list.</p>
+      <input id="resetCode" inputmode="text" autocomplete="off" placeholder="Reset code" />
+      <p class="error" id="resetError"></p>
       <div class="modal-actions">
         <button type="button" id="resetConfirm">Clear signups</button>
         <button type="button" class="secondary" id="resetCancel">Cancel</button>
@@ -210,104 +313,190 @@
     </div>
   </div>
 
+  <div class="modal" id="removeModal" hidden>
+    <div class="modal-card">
+      <h3>Remove one signup</h3>
+      <p>Enter the reset code, then choose the signup to remove. Other signups stay.</p>
+      <label for="removeCode">Reset code</label>
+      <input id="removeCode" autocomplete="off" placeholder="Reset code" />
+      <label for="removePick">Signup</label>
+      <select id="removePick"></select>
+      <p class="error" id="removeError"></p>
+      <div class="modal-actions">
+        <button type="button" id="removeConfirm">Remove signup</button>
+        <button type="button" class="secondary" id="removeCancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    const ALL_ITEMS = [
-      "Corn or Tortilla Chips (Fritos or sturdy)",
-      "Seasoned Beans",
-      "Shredded Cheese (cheddar or Mexican blend)",
-      "Shredded Lettuce (iceberg or romaine)",
-      "Diced Tomatoes",
-      "Sliced Black Olives",
-      "Salsa",
-      "Guacamole",
-      "Cooked Rice",
-      "Diced Onions",
-      "Ranch Dressing",
-      "Sour Cream",
-      "Apple Juice",
-      "Grape Juice",
-      "Dessert"
-    ];
-
-    const OPTIONAL = { "Cooked Rice": true };
-
-    const rates = {
-      "Corn or Tortilla Chips (Fritos or sturdy)": { amount: 2.5, unit: "oz" },
-      "Seasoned Beans": { amount: 0.6, unit: "cups" },
-      "Shredded Cheese (cheddar or Mexican blend)": { amount: 0.3, unit: "cups" },
-      "Shredded Lettuce (iceberg or romaine)": { amount: 1.25, unit: "cups" },
-      "Diced Tomatoes": { amount: 0.25, unit: "cups" },
-      "Sliced Black Olives": { amount: 0.1, unit: "cups" },
-      "Salsa": { amount: 0.15, unit: "cups" },
-      "Guacamole": { amount: 0.15, unit: "cups" },
-      "Cooked Rice": { amount: 0.5, unit: "cups" },
-      "Diced Onions": { amount: 0.1, unit: "cups" },
-      "Ranch Dressing": { amount: 0.1, unit: "cups" },
-      "Sour Cream": { amount: 0.1, unit: "cups" },
-      "Apple Juice": { amount: 6, unit: "oz" },
-      "Grape Juice": { amount: 6, unit: "oz" },
-      "Dessert": { amount: 1, unit: "serving" }
+    // Edit EVENT to change the details at the top of the page.
+    // Leave a value blank to hide that row. There is no start time or drop-off time.
+    const EVENT = {
+      date: "Sabbath, November 7, 2026",
+      place: "Ceres SDA Church",
+      bringUtensils: "Bring serving utensils for the dishes you bring.",
+      contact: "Shane Hilde"
     };
 
-    const STORAGE_KEY = "haystackSignups";
-    const RESET_CODE = "7777";
+    // Item names must match ITEM_NAMES in worker/src/index.ts.
+    // amount is the total for 25 people, with the store-friendly hint.
+    const ITEMS = [
+      { name: "Corn or Tortilla Chips (Fritos or sturdy)", amount: "50 oz (about 3 lb)" },
+      { name: "Seasoned Beans", amount: "12.5 cups (about 7 of the 15-oz cans)" },
+      { name: "Shredded Cheese (cheddar or Mexican blend)", amount: "6 cups (three 8-oz bags, 1.5 lb)" },
+      { name: "Shredded Lettuce (iceberg or romaine)", amount: "19 cups (about 2 large heads of iceberg)" },
+      { name: "Diced Tomatoes", amount: "6.25 cups (about 8 tomatoes)" },
+      { name: "Sliced Black Olives", amount: "2.5 cups" },
+      { name: "Salsa", amount: "3.75 cups (about two 16-oz jars)" },
+      { name: "Guacamole", amount: "3.75 cups (about 8 avocados)" },
+      { name: "Cooked Rice", amount: "12.5 cups cooked (about 4 cups dry)", optional: true },
+      { name: "Diced Onions", amount: "2.5 cups (about 2 onions)" },
+      { name: "Ranch Dressing", amount: "2.5 cups (one 24-oz bottle)" },
+      { name: "Sour Cream", amount: "2.5 cups (one 24-oz tub)" },
+      { name: "Apple Juice", amount: "1 gallon / 128 oz (two 64-oz bottles)" },
+      { name: "Grape Juice", amount: "1 gallon / 128 oz (two 64-oz bottles)" },
+      { name: "Dessert", amount: "25 servings" }
+    ];
+
+    // =====================================================================
+    // API_BASE_URL
+    // The shared list. No trailing slash. This is the only place the page
+    // learns where that list lives.
+    // For a local `wrangler dev`, temporarily use "http://127.0.0.1:8787",
+    // then put this deployed URL back before pushing.
+    // =====================================================================
+    const API_BASE_URL = "https://haystack-potluck-signup.weathered-feather-4569.workers.dev";
+
+    const TOKEN_KEY = "haystackCancelTokens";
+    const POLL_MS = 12000;
 
     const nameInput = document.getElementById("name");
     const partyInput = document.getElementById("party");
+    const notesInput = document.getElementById("notes");
     const itemList = document.getElementById("itemList");
     const signupsDiv = document.getElementById("signups");
     const headcountEl = document.getElementById("headcount");
     const successEl = document.getElementById("success");
+    const formErrorEl = document.getElementById("formError");
+    const bannerEl = document.getElementById("banner");
+    const updatedEl = document.getElementById("updated");
+    const submitBtn = document.getElementById("submitBtn");
     const resetModal = document.getElementById("resetModal");
-    const resetCode = document.getElementById("resetCode");
+    const resetCodeInput = document.getElementById("resetCode");
     const resetError = document.getElementById("resetError");
+    const removeModal = document.getElementById("removeModal");
+    const removeCodeInput = document.getElementById("removeCode");
+    const removePick = document.getElementById("removePick");
+    const removeError = document.getElementById("removeError");
+
+    const amountByName = {};
+    ITEMS.forEach(function (item) { amountByName[item.name] = item.amount; });
 
     let currentSignups = [];
+    let lastUpdated = 0;
+    let refreshSeq = 0;
+    let pollTimer = 0;
+    let clockTimer = 0;
 
     function escapeHtml(str) {
-      return String(str || "").replace(/[&<>"']/g, function (m) {
-        return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m];
+      return String(str == null ? "" : str).replace(/[&<>"']/g, function (m) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m];
       });
-    }
-
-    function normalizeItem(item) {
-      if (item === "Seasoned Beans or Vegetarian Chili") return "Seasoned Beans";
-      return item;
     }
 
     function partyOf(value) {
       const n = parseInt(value, 10);
-      return n > 0 ? n : 1;
+      return n >= 1 && n <= 99 ? n : null;
     }
 
-    const PORTIONS = {
-      "Corn or Tortilla Chips (Fritos or sturdy)": "62.5 oz",
-      "Seasoned Beans": "15 cups",
-      "Shredded Cheese (cheddar or Mexican blend)": "7.5 cups",
-      "Shredded Lettuce (iceberg or romaine)": "31.3 cups",
-      "Diced Tomatoes": "6.3 cups",
-      "Sliced Black Olives": "2.5 cups",
-      "Salsa": "3.8 cups",
-      "Guacamole": "3.8 cups",
-      "Cooked Rice": "12.5 cups",
-      "Diced Onions": "2.5 cups",
-      "Ranch Dressing": "2.5 cups",
-      "Sour Cream": "2.5 cups",
-      "Apple Juice": "150 oz",
-      "Grape Juice": "150 oz",
-      "Dessert": "25 servings"
-    };
+    function peopleWord(n) {
+      return n === 1 ? "1 person" : n + " people";
+    }
 
-    function portionText(item) {
-      return "Enough for 25 people: " + (PORTIONS[item] || "");
+    function apiBase() {
+      return String(API_BASE_URL || "").replace(/\/$/, "");
+    }
+
+    function publicSiteMissingApi() {
+      const host = location.hostname;
+      const base = apiBase();
+      return host.endsWith("github.io") && (!base || /localhost|127\.0\.0\.1/.test(base));
+    }
+
+    function loadTokens() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(TOKEN_KEY) || "{}");
+        return parsed && typeof parsed === "object" ? parsed : {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveToken(id, token) {
+      try {
+        const all = loadTokens();
+        all[id] = token;
+        localStorage.setItem(TOKEN_KEY, JSON.stringify(all));
+      } catch (e) { /* private mode still shows the shared list */ }
+    }
+
+    function dropToken(id) {
+      try {
+        const all = loadTokens();
+        delete all[id];
+        localStorage.setItem(TOKEN_KEY, JSON.stringify(all));
+      } catch (e) { /* ignore */ }
+    }
+
+    function showBanner(message) {
+      bannerEl.hidden = !message;
+      bannerEl.textContent = message || "";
+    }
+
+    function showFormError(message) {
+      formErrorEl.hidden = !message;
+      formErrorEl.textContent = message || "";
+      if (message) successEl.style.display = "none";
+    }
+
+    function showSuccess(html) {
+      successEl.style.display = "block";
+      successEl.innerHTML = html;
+      showFormError("");
+    }
+
+    function renderEvent() {
+      const rows = [
+        ["Date", EVENT.date],
+        ["Place", EVENT.place],
+        ["Contact", EVENT.contact]
+      ].filter(function (row) { return String(row[1] || "").trim(); });
+      document.getElementById("eventDetails").innerHTML = rows.map(function (row) {
+        return "<dt>" + escapeHtml(row[0]) + "</dt><dd>" + escapeHtml(row[1]) + "</dd>";
+      }).join("");
+      const utensils = document.getElementById("utensils");
+      utensils.textContent = EVENT.bringUtensils || "";
+      utensils.hidden = !String(EVENT.bringUtensils || "").trim();
     }
 
     function takenSet() {
       const taken = new Set();
-      currentSignups.forEach(function (s) {
-        if (!OPTIONAL[s.item]) taken.add(s.item);
+      currentSignups.forEach(function (signup) {
+        (signup.items || []).forEach(function (item) {
+          const known = ITEMS.find(function (entry) { return entry.name === item; });
+          if (!known || !known.optional) taken.add(item);
+        });
       });
       return taken;
+    }
+
+    function orderedItems(items) {
+      const rank = {};
+      ITEMS.forEach(function (item, index) { rank[item.name] = index; });
+      return items.slice().sort(function (a, b) {
+        return (rank[a] == null ? 99 : rank[a]) - (rank[b] == null ? 99 : rank[b]);
+      });
     }
 
     function rebuildItemList() {
@@ -315,95 +504,226 @@
         Array.from(itemList.querySelectorAll("input:checked")).map(function (el) { return el.value; })
       );
       const taken = takenSet();
-      const available = ALL_ITEMS.filter(function (item) { return !taken.has(item); });
+      const available = ITEMS.filter(function (item) { return item.optional || !taken.has(item.name); });
       if (!available.length) {
         itemList.innerHTML = '<div class="empty">Every item is claimed.</div>';
         return;
       }
       itemList.innerHTML = available.map(function (item) {
-        const tag = OPTIONAL[item] ? '<span class="tag">optional</span>' : "";
+        const tag = item.optional ? '<span class="tag">optional</span>' : "";
+        const isChecked = checked.has(item.name) ? " checked" : "";
         return '<label class="choice">' +
-          '<input type="checkbox" name="item" value="' + escapeHtml(item) + '"' + (checked.has(item) ? " checked" : "") + " />" +
-          "<span>" + escapeHtml(item) + tag + "</span>" +
-          '<span class="amt">' + escapeHtml(portionText(item)) + "</span>" +
-          "</label>";
+          '<input type="checkbox" name="item" value="' + escapeHtml(item.name) + '"' + isChecked + " />" +
+          '<span class="choice-text">' +
+            '<span class="choice-name">' + escapeHtml(item.name) + tag + "</span>" +
+            '<span class="choice-amt">' + escapeHtml(item.amount) + "</span>" +
+          "</span></label>";
       }).join("");
     }
 
     function renderSignups() {
-      headcountEl.textContent = "Every item is enough for 25 people.";
+      const total = currentSignups.reduce(function (sum, signup) {
+        return sum + (parseInt(signup.party, 10) || 0);
+      }, 0);
+      headcountEl.textContent = peopleWord(total) + " signed up so far";
+      const tokens = loadTokens();
       if (!currentSignups.length) {
         signupsDiv.innerHTML = '<div class="empty">No signups yet. Be the first!</div>';
         return;
       }
-      signupsDiv.innerHTML = currentSignups.map(function (s) {
-        return '<div class="signup-item">' +
-          "<strong>" + escapeHtml(s.item) + "</strong>" +
-          (OPTIONAL[s.item] ? '<span class="tag">optional</span>' : "") +
-          " — " + escapeHtml(s.name) + " · " + escapeHtml(s.party) + " attending" +
-          '<br><span class="amt" style="color:var(--accent);">' + escapeHtml(portionText(s.item)) + "</span>" +
-          (s.notes ? "<br><span style=\"color:var(--muted);font-size:0.85rem;\">" + escapeHtml(s.notes) + "</span>" : "") +
-          "</div>";
+      signupsDiv.innerHTML = currentSignups.map(function (signup) {
+        const items = orderedItems(signup.items || []);
+        const list = items.map(function (item) {
+          const known = ITEMS.find(function (entry) { return entry.name === item; });
+          const tag = known && known.optional ? '<span class="tag">optional</span>' : "";
+          const amount = amountByName[item] || "";
+          return "<li><span class=\"brought-name\">" + escapeHtml(item) + tag + "</span>" +
+            (amount ? '<span class="brought-amt">' + escapeHtml(amount) + "</span>" : "") +
+            "</li>";
+        }).join("");
+        const cancel = tokens[signup.id]
+          ? '<button type="button" class="secondary small" data-cancel="' + escapeHtml(signup.id) + '">Cancel my signup</button>'
+          : "";
+        const notes = signup.notes
+          ? '<p class="notes">' + escapeHtml(signup.notes) + "</p>"
+          : "";
+        return '<article class="signup-item">' +
+          '<p class="signup-who"><strong>' + escapeHtml(signup.name) + "</strong> · " +
+          escapeHtml(peopleWord(signup.party)) + "</p>" +
+          '<ul class="brought">' + list + "</ul>" +
+          notes +
+          cancel +
+          "</article>";
       }).join("");
     }
 
-    function persist() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(currentSignups));
-    }
-
-    function load() {
-      let saved = [];
-      try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch (e) { saved = []; }
-      currentSignups = saved.map(function (s) {
-        return {
-          name: s.name || "",
-          party: String(partyOf(s.party)),
-          item: normalizeItem(s.item || ""),
-          notes: s.notes || ""
-        };
-      }).filter(function (s) { return s.name && ALL_ITEMS.indexOf(s.item) !== -1; });
-      persist();
+    function applyList(signups) {
+      currentSignups = Array.isArray(signups) ? signups : [];
       rebuildItemList();
       renderSignups();
+      if (!removeModal.hidden) fillRemoveOptions();
     }
 
-    document.getElementById("signup").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const name = nameInput.value.trim();
-      const party = String(partyOf(partyInput.value));
-      const notes = document.getElementById("notes").value.trim();
-      const taken = takenSet();
-      const chosen = Array.from(itemList.querySelectorAll("input:checked"))
-        .map(function (el) { return el.value; })
-        .filter(function (item) { return !taken.has(item); });
-      if (!chosen.length) {
-        successEl.style.display = "block";
-        successEl.innerHTML = "<strong>Pick at least one item.</strong>";
+    function markUpdated() {
+      lastUpdated = Date.now();
+      paintUpdated();
+    }
+
+    function paintUpdated() {
+      if (!lastUpdated) {
+        updatedEl.textContent = "Not updated yet";
         return;
       }
-      chosen.forEach(function (item) {
-        currentSignups.push({ name: name, party: party, item: item, notes: notes });
+      const seconds = Math.round((Date.now() - lastUpdated) / 1000);
+      if (seconds < 15) updatedEl.textContent = "Updated just now";
+      else if (seconds < 60) updatedEl.textContent = "Updated " + seconds + " seconds ago";
+      else updatedEl.textContent = "Updated " + Math.floor(seconds / 60) + " min ago";
+    }
+
+    async function api(path, options) {
+      const base = apiBase();
+      if (!base) throw new Error("missing-api");
+      const opts = options || {};
+      return fetch(base + path, {
+        method: opts.method || "GET",
+        cache: "no-store",
+        headers: opts.body ? { "Content-Type": "application/json" } : {},
+        body: opts.body ? JSON.stringify(opts.body) : undefined
       });
-      currentSignups.forEach(function (s) {
-        if (s.name.trim().toLowerCase() === name.toLowerCase()) s.party = party;
-      });
-      persist();
-      rebuildItemList();
-      renderSignups();
-      successEl.style.display = "block";
-      successEl.innerHTML = "<strong>Thanks, " + escapeHtml(name) + ".</strong> You're bringing " +
-        chosen.map(escapeHtml).join(", ") + ".";
-      nameInput.value = "";
-      document.getElementById("notes").value = "";
-      partyInput.value = "1";
-      rebuildItemList();
+    }
+
+    async function readBody(response) {
+      try { return await response.json(); } catch (e) { return null; }
+    }
+
+    async function refresh() {
+      const seq = ++refreshSeq;
+      try {
+        const response = await api("/api/signups");
+        const data = await readBody(response);
+        if (seq !== refreshSeq) return;
+        if (!response.ok || !data || !Array.isArray(data.signups)) {
+          throw new Error("bad-response");
+        }
+        applyList(data.signups);
+        markUpdated();
+        showBanner("");
+      } catch (e) {
+        if (seq !== refreshSeq) return;
+        updatedEl.textContent = "Couldn't refresh";
+        showBanner("The signup list can't be reached right now. Check your connection. We'll keep trying.");
+      }
+    }
+
+    function fillRemoveOptions() {
+      const previous = removePick.value;
+      if (!currentSignups.length) {
+        removePick.innerHTML = '<option value="">No signups yet</option>';
+        return;
+      }
+      removePick.innerHTML = currentSignups.map(function (signup) {
+        const label = signup.name + " · " + peopleWord(signup.party) + " · " + (signup.items || []).join(", ");
+        return '<option value="' + escapeHtml(signup.id) + '">' + escapeHtml(label) + "</option>";
+      }).join("");
+      if (previous && currentSignups.some(function (signup) { return signup.id === previous; })) {
+        removePick.value = previous;
+      }
+    }
+
+    document.getElementById("signup").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const name = nameInput.value.trim();
+      const party = partyOf(partyInput.value);
+      const notes = notesInput.value.trim();
+      const chosen = Array.from(itemList.querySelectorAll("input:checked")).map(function (el) { return el.value; });
+      if (!name) {
+        showFormError("Please enter your name.");
+        nameInput.focus();
+        return;
+      }
+      if (party === null) {
+        showFormError("Enter a party size from 1 to 99.");
+        partyInput.focus();
+        return;
+      }
+      if (!chosen.length) {
+        showFormError("Pick at least one item.");
+        return;
+      }
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Saving…";
+      showFormError("");
+      try {
+        const response = await api("/api/signups", {
+          method: "POST",
+          body: { name: name, party: party, items: chosen, notes: notes }
+        });
+        const data = await readBody(response);
+        refreshSeq += 1;
+        if (data && Array.isArray(data.signups)) applyList(data.signups);
+        if (response.status === 409) {
+          markUpdated();
+          showFormError((data && data.message) || "That item was just taken. The list has been refreshed.");
+          return;
+        }
+        if (!response.ok) {
+          showFormError((data && data.message) || "That signup could not be saved. Please try again.");
+          return;
+        }
+        if (data && data.signup && data.cancelToken) saveToken(data.signup.id, data.cancelToken);
+        markUpdated();
+        showBanner("");
+        showSuccess("<strong>Thanks, " + escapeHtml(name) + ".</strong> You're bringing " +
+          chosen.map(escapeHtml).join(", ") + ". Everyone can see it now.");
+        nameInput.value = "";
+        notesInput.value = "";
+        partyInput.value = "1";
+        rebuildItemList();
+        renderSignups();
+      } catch (err) {
+        showFormError("The signup list can't be reached right now. Nothing was saved. Please try again.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Sign up";
+      }
+    });
+
+    signupsDiv.addEventListener("click", async function (e) {
+      const button = e.target.closest("button[data-cancel]");
+      if (!button) return;
+      const id = button.getAttribute("data-cancel");
+      const token = loadTokens()[id];
+      if (!token) return;
+      if (!window.confirm("Cancel this signup? The items go back on the list.")) return;
+      button.disabled = true;
+      try {
+        const response = await api("/api/signups/" + encodeURIComponent(id), {
+          method: "DELETE",
+          body: { cancelToken: token }
+        });
+        const data = await readBody(response);
+        refreshSeq += 1;
+        if (response.ok || response.status === 404) {
+          dropToken(id);
+          if (data && Array.isArray(data.signups)) applyList(data.signups);
+          else refresh();
+          markUpdated();
+          showSuccess("<strong>Signup cancelled.</strong> Those items are available again.");
+          return;
+        }
+        showFormError((data && data.message) || "That signup could not be cancelled.");
+        button.disabled = false;
+      } catch (err) {
+        showFormError("The signup list can't be reached right now. Please try again.");
+        button.disabled = false;
+      }
     });
 
     document.getElementById("resetBtn").addEventListener("click", function () {
-      resetCode.value = "";
+      resetCodeInput.value = "";
       resetError.textContent = "";
       resetModal.hidden = false;
-      resetCode.focus();
+      resetCodeInput.focus();
     });
     document.getElementById("resetCancel").addEventListener("click", function () {
       resetModal.hidden = true;
@@ -411,20 +731,101 @@
     resetModal.addEventListener("click", function (e) {
       if (e.target === resetModal) resetModal.hidden = true;
     });
-    document.getElementById("resetConfirm").addEventListener("click", function () {
-      if (resetCode.value.trim() !== RESET_CODE) {
-        resetError.textContent = "That code is not right.";
-        return;
+    resetCodeInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        document.getElementById("resetConfirm").click();
       }
-      currentSignups = [];
-      localStorage.removeItem(STORAGE_KEY);
-      successEl.style.display = "none";
-      resetModal.hidden = true;
-      rebuildItemList();
-      renderSignups();
+    });
+    document.getElementById("resetConfirm").addEventListener("click", async function () {
+      resetError.textContent = "";
+      const button = document.getElementById("resetConfirm");
+      button.disabled = true;
+      try {
+        const response = await api("/api/reset", {
+          method: "POST",
+          body: { resetCode: resetCodeInput.value }
+        });
+        const data = await readBody(response);
+        if (!response.ok) {
+          resetError.textContent = (data && data.message) || "That code is not right.";
+          return;
+        }
+        refreshSeq += 1;
+        applyList((data && data.signups) || []);
+        markUpdated();
+        resetModal.hidden = true;
+        showSuccess("<strong>All signups were cleared.</strong>");
+      } catch (err) {
+        resetError.textContent = "The signup list can't be reached right now.";
+      } finally {
+        button.disabled = false;
+      }
     });
 
-    load();
+    document.getElementById("removeBtn").addEventListener("click", function () {
+      removeCodeInput.value = "";
+      removeError.textContent = "";
+      fillRemoveOptions();
+      removeModal.hidden = false;
+      removeCodeInput.focus();
+    });
+    document.getElementById("removeCancel").addEventListener("click", function () {
+      removeModal.hidden = true;
+    });
+    removeModal.addEventListener("click", function (e) {
+      if (e.target === removeModal) removeModal.hidden = true;
+    });
+    document.getElementById("removeConfirm").addEventListener("click", async function () {
+      removeError.textContent = "";
+      const id = removePick.value;
+      if (!id) {
+        removeError.textContent = "There is no signup to remove.";
+        return;
+      }
+      const button = document.getElementById("removeConfirm");
+      button.disabled = true;
+      try {
+        const response = await api("/api/signups/" + encodeURIComponent(id), {
+          method: "DELETE",
+          body: { resetCode: removeCodeInput.value }
+        });
+        const data = await readBody(response);
+        if (!response.ok) {
+          removeError.textContent = (data && data.message) || "That signup could not be removed.";
+          if (data && Array.isArray(data.signups)) applyList(data.signups);
+          return;
+        }
+        refreshSeq += 1;
+        dropToken(id);
+        applyList((data && data.signups) || []);
+        markUpdated();
+        removeModal.hidden = true;
+        showSuccess("<strong>That signup was removed.</strong>");
+      } catch (err) {
+        removeError.textContent = "The signup list can't be reached right now.";
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    renderEvent();
+    rebuildItemList();
+    renderSignups();
+
+    if (publicSiteMissingApi() || !apiBase()) {
+      showBanner("The shared list isn't connected yet, so sign-ups on this page can't be saved. Please check back soon.");
+      submitBtn.disabled = true;
+      updatedEl.textContent = "Not connected";
+    } else {
+      refresh();
+      pollTimer = window.setInterval(refresh, POLL_MS);
+      clockTimer = window.setInterval(paintUpdated, 5000);
+      window.addEventListener("focus", refresh);
+      document.addEventListener("visibilitychange", function () {
+        if (!document.hidden) refresh();
+      });
+    }
   </script>
 </body>
 </html>

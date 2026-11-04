@@ -1,0 +1,4 @@
+# Copy to .dev.vars (same folder) before `npx wrangler dev`.
+# .dev.vars is gitignored. Put the reset code there for local testing only.
+# Production uses `npx wrangler secret put RESET_CODE` and is not stored in this repo.
+RESET_CODE="replace-with-your-reset-code"

@@ -1,0 +1,33 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "haystack-potluck-signup",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-03",
+  "compatibility_flags": ["nodejs_compat"],
+  "upload_source_maps": true,
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 1
+    }
+  },
+  // RESET_CODE is set with `npx wrangler secret put RESET_CODE`.
+  // It is not stored in this file. Local dev reads it from .dev.vars.
+  "secrets": {
+    "required": ["RESET_CODE"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "haystack-potluck",
+      // Live D1 database created for this Worker.
+      "database_id": "1f14a2d7-ef79-4a1f-8238-1e47e5eb674a",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Haystack potluck">
+  <rect width="32" height="32" rx="8" fill="#2c6e49"/>
+  <ellipse cx="16" cy="23" rx="11" ry="4.2" fill="#e7c98a"/>
+  <ellipse cx="16" cy="18.2" rx="9.5" ry="3.6" fill="#c4492c"/>
+  <ellipse cx="16" cy="13.8" rx="8" ry="3.2" fill="#7dba78"/>
+  <ellipse cx="16" cy="10" rx="6" ry="2.5" fill="#f7f3eb"/>
+</svg>
