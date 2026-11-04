@@ -19,7 +19,7 @@ npm install
 npx wrangler d1 create haystack-potluck
 ```
 
-Wrangler prints a `database_id`. Open `wrangler.jsonc` and replace the placeholder `00000000-0000-0000-0000-000000000000` with that id. Leave `database_name` as `haystack-potluck` and `binding` as `DB`.
+Wrangler prints a `database_id`. The live database is already in `wrangler.jsonc` (`1f14a2d7-ef79-4a1f-8238-1e47e5eb674a`). Leave `database_name` as `haystack-potluck` and `binding` as `DB`. Do not create a second database for this event.
 
 3. Apply the schema to the remote database. Deploy does not apply migrations.
 
@@ -51,7 +51,7 @@ npx wrangler secret put RESET_CODE
 
 5. The deploy command prints the Worker URL, like `https://haystack-potluck-signup.<account>.workers.dev`.
 
-6. Paste that URL into the page. In the repo root `index.html`, set `API_BASE_URL` (search for that name, near the top of the script) to the Worker URL with no trailing slash. Commit and push so GitHub Pages updates. Until you do, the public page shows that the shared list is not connected.
+6. `API_BASE_URL` in the repo root `index.html` is already `https://haystack-potluck-signup.weathered-feather-4569.workers.dev` (no trailing slash). That is the only place the page looks for the API. Commit and push the page so GitHub Pages serves it.
 
 No dashboard steps are required. CORS already allows `https://shwinston.github.io`.
 
@@ -69,7 +69,7 @@ npx wrangler d1 migrations apply haystack-potluck --local
 npx wrangler dev
 ```
 
-The API listens on `http://127.0.0.1:8787`. The checked-in page already points `API_BASE_URL` there. From the repo root:
+The API listens on `http://127.0.0.1:8787`. The page in the repo points at the deployed Worker. To use this local API, temporarily set `API_BASE_URL` in `index.html` to `http://127.0.0.1:8787`, and put the deployed URL back before pushing. From the repo root:
 
 ```bash
 python3 -m http.server 8080

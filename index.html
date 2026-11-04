@@ -32,8 +32,6 @@
       --muted: #5c564e;
       --border: #e0d5c4;
       --danger: #8d2b2b;
-      --warn: #8a5a12;
-      --warn-bg: #fff4e2;
     }
     * { box-sizing: border-box; }
     body {
@@ -84,14 +82,6 @@
       color: var(--muted);
     }
     .event-list dd { margin: 0; }
-    .todo {
-      display: inline-block;
-      color: var(--warn);
-      background: var(--warn-bg);
-      border-radius: 6px;
-      padding: 0.05rem 0.4rem;
-      font-weight: 700;
-    }
     .utensils {
       margin: 0.9rem 0 0;
       padding: 0.7rem 0.8rem;
@@ -341,14 +331,12 @@
 
   <script>
     // Edit EVENT to change the details at the top of the page.
-    // Replace each "TODO" before sharing the link. Do not guess a time or a name.
+    // Leave a value blank to hide that row. There is no start time or drop-off time.
     const EVENT = {
       date: "Sabbath, November 7, 2026",
-      time: "TODO",
       place: "Ceres SDA Church",
-      dropOff: "TODO",
       bringUtensils: "Bring serving utensils for the dishes you bring.",
-      contact: "TODO"
+      contact: "Shane Hilde"
     };
 
     // Item names must match ITEM_NAMES in worker/src/index.ts.
@@ -373,13 +361,12 @@
 
     // =====================================================================
     // API_BASE_URL
-    // After `npx wrangler deploy`, paste the Worker URL here with no trailing
-    // slash. This is the only place the page learns where the shared list lives.
-    //   Local testing:  "http://127.0.0.1:8787"
-    //   GitHub Pages:   "https://haystack-potluck-signup.<account>.workers.dev"
-    // Until this is the deployed https URL, the public page cannot share sign-ups.
+    // The shared list. No trailing slash. This is the only place the page
+    // learns where that list lives.
+    // For a local `wrangler dev`, temporarily use "http://127.0.0.1:8787",
+    // then put this deployed URL back before pushing.
     // =====================================================================
-    const API_BASE_URL = "http://127.0.0.1:8787";
+    const API_BASE_URL = "https://haystack-potluck-signup.weathered-feather-4569.workers.dev";
 
     const TOKEN_KEY = "haystackCancelTokens";
     const POLL_MS = 12000;
@@ -425,10 +412,6 @@
 
     function peopleWord(n) {
       return n === 1 ? "1 person" : n + " people";
-    }
-
-    function isTodo(value) {
-      return String(value || "").trim().toUpperCase().indexOf("TODO") === 0;
     }
 
     function apiBase() {
@@ -486,18 +469,15 @@
     function renderEvent() {
       const rows = [
         ["Date", EVENT.date],
-        ["Time", EVENT.time],
         ["Place", EVENT.place],
-        ["Drop-off", EVENT.dropOff],
         ["Contact", EVENT.contact]
-      ];
+      ].filter(function (row) { return String(row[1] || "").trim(); });
       document.getElementById("eventDetails").innerHTML = rows.map(function (row) {
-        const todo = isTodo(row[1]);
-        return "<dt>" + escapeHtml(row[0]) + "</dt><dd" + (todo ? ' class="todo"' : "") + ">" + escapeHtml(row[1]) + "</dd>";
+        return "<dt>" + escapeHtml(row[0]) + "</dt><dd>" + escapeHtml(row[1]) + "</dd>";
       }).join("");
       const utensils = document.getElementById("utensils");
-      utensils.textContent = EVENT.bringUtensils;
-      utensils.className = isTodo(EVENT.bringUtensils) ? "utensils todo" : "utensils";
+      utensils.textContent = EVENT.bringUtensils || "";
+      utensils.hidden = !String(EVENT.bringUtensils || "").trim();
     }
 
     function takenSet() {

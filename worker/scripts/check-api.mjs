@@ -75,6 +75,9 @@ function staticChecks() {
   assert(!page.includes("const RESET_CODE"), "reset code constant is still in the page");
   assert(!page.includes("const rates"), "per-person rates are still in the page");
   assert(page.includes("const API_BASE_URL"), "API_BASE_URL constant is missing");
+  assert(page.includes("https://haystack-potluck-signup.weathered-feather-4569.workers.dev"), "page is not pointed at the deployed Worker");
+  assert(page.includes("Shane Hilde"), "contact name is missing");
+  assert(!page.includes("TODO"), "placeholder text is still on the page");
   assert(page.includes("Ceres SDA Church"), "place is missing");
   assert(page.includes("Sabbath, November 7, 2026"), "date is missing");
   assert(page.includes("50 oz (about 3 lb)"), "chips amount is missing");
@@ -82,8 +85,8 @@ function staticChecks() {
   assert(page.includes("25 servings"), "dessert amount is missing");
   assert(page.includes('og:image'), "Open Graph image tag is missing");
   assert(!worker.includes('RESET_CODE = "') && !worker.includes("RESET_CODE='"), "worker source contains a reset code literal");
-  assert(readme.includes("npx wrangler d1 create haystack-potluck"), "root README is missing the create command");
-  assert(readme.includes("npx wrangler deploy --secrets-file .prod.secrets"), "root README is missing the first deploy command");
+  assert(readme.includes("1f14a2d7-ef79-4a1f-8238-1e47e5eb674a"), "root README is missing the live database id");
+  assert(readme.includes("https://haystack-potluck-signup.weathered-feather-4569.workers.dev"), "root README is missing the deployed Worker URL");
   assert(readme.includes("npx wrangler secret put RESET_CODE"), "root README is missing the secret command");
   assert(readme.includes("API_BASE_URL"), "root README does not say where to paste the Worker URL");
   const pageItems = itemNamesFromPage();

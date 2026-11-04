@@ -10,7 +10,7 @@ The page is a single static `index.html` file (GitHub Pages, no build step). Sig
 
 In `index.html`:
 
-- `EVENT` is the block at the top (date, time, place, drop-off, serving utensils, contact). Replace each `TODO`. The date and place are already set. Do not invent a time or a contact name.
+- `EVENT` is the block at the top (date, place, serving utensils, contact). The date is Sabbath, November 7, 2026, the place is Ceres SDA Church, and the contact is Shane Hilde. There is no start time or drop-off time on the page. A blank value is hidden.
 - `ITEMS` is the menu. Each `amount` is the total for 25 people, including the store hint. Dessert is unchanged (`25 servings`). Item names must stay in sync with `ITEM_NAMES` in `worker/src/index.ts`.
 - `API_BASE_URL` is the Worker URL. See below.
 
@@ -20,31 +20,20 @@ Someone can cancel their own signup on the same phone or computer (the page keep
 
 ## Deploy the shared list
 
-Full notes, including local testing, are in [worker/README.md](worker/README.md). From a checkout of this repo:
+Full notes, including local testing, are in [worker/README.md](worker/README.md).
+
+The Worker and D1 database are already deployed. `worker/wrangler.jsonc` has database id `1f14a2d7-ef79-4a1f-8238-1e47e5eb674a`. Do not create a second database for this event.
+
+To deploy a code change again, from `worker/`:
 
 ```bash
-cd worker
 npm install
-npx wrangler d1 create haystack-potluck
+npx wrangler deploy
 ```
 
-Copy the printed `database_id` into `worker/wrangler.jsonc`, replacing `00000000-0000-0000-0000-000000000000`.
+Schema changes still need `npx wrangler d1 migrations apply haystack-potluck --remote`. `deploy` does not apply migrations. To change the reset code after this Worker exists, run `npx wrangler secret put RESET_CODE`. Local `wrangler dev` reads `.dev.vars` instead, and deploy does not upload that file.
 
-```bash
-npx wrangler d1 migrations apply haystack-potluck --remote
-```
-
-Create a gitignored file `worker/.prod.secrets` with one line, `RESET_CODE=your-code-here`. Do not commit it. The old code was in `index.html` and remains in git history, so choose a new one if you can. The Worker does not exist yet, so the first deploy has to carry the secret. `wrangler secret put` cannot run before that.
-
-```bash
-npx wrangler deploy --secrets-file .prod.secrets
-```
-
-Run that from `worker/`. After this Worker exists, change the code with `npx wrangler secret put RESET_CODE`. Local `wrangler dev` reads `.dev.vars` instead, and deploy does not upload that file.
-
-`deploy` does not apply the database schema. The `migrations apply` command above is what creates the tables (`worker/migrations/0001_init.sql`).
-
-Paste the Worker URL (no trailing slash) into `API_BASE_URL` in `index.html`, then commit and push so GitHub Pages picks it up. Search the file for `API_BASE_URL`. It is the only place the page looks for the API. The checked-in value is `http://127.0.0.1:8787` for local `wrangler dev`. A public Pages visit keeps showing "not connected" until that constant is the `https://…workers.dev` URL.
+`API_BASE_URL` in `index.html` is already the deployed Worker, `https://haystack-potluck-signup.weathered-feather-4569.workers.dev` (no trailing slash). That constant is the only place the page looks for the API. The D1 database id in `worker/wrangler.jsonc` is the live database. For a local Worker only, temporarily point `API_BASE_URL` at `http://127.0.0.1:8787` and put the deployed URL back before pushing.
 
 CORS already allows `https://shwinston.github.io`. Nothing else has to be set in the Cloudflare dashboard.
 

@@ -25,9 +25,8 @@
     {
       "binding": "DB",
       "database_name": "haystack-potluck",
-      // Replace this placeholder with the id printed by:
-      //   npx wrangler d1 create haystack-potluck
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      // Live D1 database created for this Worker.
+      "database_id": "1f14a2d7-ef79-4a1f-8238-1e47e5eb674a",
       "migrations_dir": "migrations"
     }
   ]
